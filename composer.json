@@ -12,9 +12,8 @@
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.1.*",
         "symfony/runtime": "6.1.*",
+        "symfony/webpack-encore-bundle": "^1.15",
         "symfony/yaml": "6.1.*"
-    },
-    "require-dev": {
     },
     "config": {
         "allow-plugins": {
@@ -67,5 +66,8 @@
             "allow-contrib": false,
             "require": "6.1.*"
         }
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.45"
     }
 }
