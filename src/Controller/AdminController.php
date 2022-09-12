@@ -38,6 +38,14 @@ class AdminController extends AbstractDashboardController
             ->setTitle('RoomReservationProject');
     }
 
+    /**
+     * @Route("/admin/login", name="app_admin_login")
+     */
+    public function view(){
+        return $this->render("login.html.twig");
+    }
+
+
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
