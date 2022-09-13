@@ -16,7 +16,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         //The credentials of one user
-        /*$user = new User();
+        $user = new User();
         $user->setEmail('ameta@gmail.com');
         $user->setFirstName('Anisa');
         $user->setLastName('Meta');
@@ -27,7 +27,7 @@ class SecurityController extends AbstractController
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
-*/
+ 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user

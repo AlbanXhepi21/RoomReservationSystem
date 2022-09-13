@@ -24,6 +24,9 @@ class Building
     #[ORM\OneToMany(mappedBy: 'building', targetEntity: Room::class)]
     private Collection $rooms;
 
+    #[ORM\ManyToOne(inversedBy: 'buildings')]
+    private ?User $admin = null;
+
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
@@ -84,6 +87,18 @@ class Building
                 $room->setBuilding(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAdmin(): ?User
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(?User $admin): self
+    {
+        $this->admin = $admin;
 
         return $this;
     }
