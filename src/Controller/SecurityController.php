@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -55,7 +56,8 @@ class SecurityController extends AbstractController
 
      #[Route("/register", "app_register")]
 
-    public function register(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher,  LoginFormAuthenticator $formAuthenticator){
+    public function register(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher,  LoginFormAuthenticator $formAuthenticator,Security $security){
+
         $form = $this->createForm( UserRegistrationFormType::class);
         $form->handleRequest($request);
 
@@ -63,6 +65,12 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
+
+
+            if ($this->isGranted('ROLE_ADMIN')){
+                $roles[] = 'ROLE_ADMIN';
+                $user->setRoles(array_unique($roles));
+            }
 
 
             $user->setPassword($passwordHasher->hashPassword($user,$form['plainPassword']->getData()));
