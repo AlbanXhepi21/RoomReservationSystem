@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\RoomRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RoomController extends BaseController
@@ -9,8 +10,11 @@ class RoomController extends BaseController
     /**
      * @Route("/rooms/view", name="app_rooms_view")
      */
-    public function view(){
-        return $this->render('rooms/view.html.twig');
+    public function view(RoomRepository $roomRepository, ){
+
+        $rooms = $roomRepository->findAll();
+        return $this->render('rooms/view.html.twig',
+        [ 'rooms'=> $rooms]);
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Building;
+use App\Entity\Room;
 use App\Entity\User;
 use App\Form\UserRegistrationFormType;
 use App\Security\LoginFormAuthenticator;
@@ -23,11 +25,12 @@ class SecurityController extends AbstractController
     {
         //The credentials of one user
         $user = new User();
-        $user->setEmail('ameta@gmail.com');
+        $user->setEmail('am@gmail.com');
         $user->setFirstName('Anisa');
         $user->setLastName('Meta');
         $user->setRoles(['ROLE_USER']);
         $user->setPlainPassword('epoka123');
+        $user->setAgreedTermsAt( new \DateTimeImmutable());
         $password = $passwordHasher->hashPassword($user, $user->getPlainPassword());
         $user->setPassword($password);
         // if ($this->getUser()) {
@@ -38,9 +41,20 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
+        $room = new Room();
+        $building = new Building();
+        $building->setName("Building2");
+        $building->setAddress("Address2");
+        $building->setAdmin($user);
+        $room->setName('A001');
+        $room->setBuilding($building);
+        $room->setStatus([1,0,0,0,0,0,1]);
+        $room->setCapacity(10);
 
-        /*$entityManager->persist($user);
-        $entityManager->flush();*/
+        $entityManager->persist($building);
+        $entityManager->persist($user);
+        $entityManager->persist($room);
+        $entityManager->flush();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
