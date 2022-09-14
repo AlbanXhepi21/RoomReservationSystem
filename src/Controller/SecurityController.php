@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserRegistrationFormType;
-use App\Repository\BuildingRepository;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,12 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
+use function Zenstruck\Foundry\faker;
 
 
 class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, BuildingRepository $buildingRepository): Response
+    public function login(AuthenticationUtils $authenticationUtils, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         //The credentials of one user
         $user = new User();
@@ -29,6 +29,7 @@ class SecurityController extends AbstractController
         $user->setLastName('Meta');
         $user->setRoles(['ROLE_USER']);
         $user->setPlainPassword('epoka123');
+        $user->setAgreedTermsAt(faker()->dateTime("-1 year"));
         $password = $passwordHasher->hashPassword($user, $user->getPlainPassword());
         $user->setPassword($password);
         // if ($this->getUser()) {
@@ -40,13 +41,10 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        /*$entityManager->persist($user);
-        $entityManager->flush();*/
+         $entityManager->persist($user);
+        $entityManager->flush();
 
-        return $this->render('building/index.html.twig', [
-            'last_username' => $lastUsername, 'error' => $error,
-            'buildings' => $buildingRepository->findAll(),
-            ]);
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     /**
