@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
+use function Zenstruck\Foundry\faker;
 
 
 class SecurityController extends AbstractController
@@ -30,7 +31,11 @@ class SecurityController extends AbstractController
         $user->setLastName('Meta');
         $user->setRoles(['ROLE_USER']);
         $user->setPlainPassword('epoka123');
+<<<<<<< HEAD
         $user->setAgreedTermsAt( new \DateTimeImmutable());
+=======
+        $user->setAgreedTermsAt(faker()->dateTime("-1 year"));
+>>>>>>> 6fcaae1c0955c58979546899170f2e245cd1880f
         $password = $passwordHasher->hashPassword($user, $user->getPlainPassword());
         $user->setPassword($password);
         // if ($this->getUser()) {
@@ -51,9 +56,13 @@ class SecurityController extends AbstractController
         $room->setStatus([1,0,0,0,0,0,1]);
         $room->setCapacity(10);
 
+<<<<<<< HEAD
         $entityManager->persist($building);
         $entityManager->persist($user);
         $entityManager->persist($room);
+=======
+         $entityManager->persist($user);
+>>>>>>> 6fcaae1c0955c58979546899170f2e245cd1880f
         $entityManager->flush();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
