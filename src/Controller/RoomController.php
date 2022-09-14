@@ -13,4 +13,11 @@ class RoomController extends BaseController
         return $this->render('rooms/view.html.twig');
     }
 
+    /**
+     * @Route("/",name="app_homepage")
+     */
+    public function viewHomepage(){
+        return $this->render('homepage.html.twig');
+    }
+
 }
