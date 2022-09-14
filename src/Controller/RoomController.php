@@ -2,42 +2,27 @@
 
 namespace App\Controller;
 
-<<<<<<< HEAD
-use App\Repository\RoomRepository;
-=======
-use App\Entity\Room;
 use App\Form\RoomType;
 use App\Repository\RoomRepository;
+use App\Entity\Room;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
->>>>>>> 6fcaae1c0955c58979546899170f2e245cd1880f
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/room')]
 class RoomController extends AbstractController
 {
-<<<<<<< HEAD
-    /**
-     * @Route("/rooms/view", name="app_rooms_view")
-     */
-    public function view(RoomRepository $roomRepository, ){
 
-        $rooms = $roomRepository->findAll();
-        return $this->render('rooms/view.html.twig',
-        [ 'rooms'=> $rooms]);
-=======
-    #[Route('/', name: 'app_room_index', methods: ['GET'])]
+    #[Route('/room/show', name: 'app_room_index')]
     public function index(RoomRepository $roomRepository): Response
     {
-        return $this->render('room/index.html.twig', [
-            'rooms' => $roomRepository->findAll(),
-        ]);
->>>>>>> 6fcaae1c0955c58979546899170f2e245cd1880f
+        $room = $roomRepository->findOneBy(['id' => '1']);
+        return $this->render('room/show.html.twig',
+            ['room' => $room]);
     }
 
 
-    #[Route('/new', name: 'app_room_new', methods: ['GET', 'POST'])]
+    #[Route('/room/new', name: 'app_room_new', methods: ['GET', 'POST'])]
     public function new(Request $request, RoomRepository $roomRepository): Response
     {
         $room = new Room();

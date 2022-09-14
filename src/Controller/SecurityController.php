@@ -25,28 +25,27 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         //The credentials of one user
-        $user = new User();
+       /* $user = new User();
         $user->setEmail('am@gmail.com');
         $user->setFirstName('Anisa');
         $user->setLastName('Meta');
         $user->setRoles(['ROLE_USER']);
         $user->setPlainPassword('epoka123');
-<<<<<<< HEAD
         $user->setAgreedTermsAt( new \DateTimeImmutable());
-=======
+
         $user->setAgreedTermsAt(faker()->dateTime("-1 year"));
->>>>>>> 6fcaae1c0955c58979546899170f2e245cd1880f
+
         $password = $passwordHasher->hashPassword($user, $user->getPlainPassword());
         $user->setPassword($password);
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
  
-        // get the login error if there is one
+        // get the login error if there is one*/
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        $room = new Room();
+       /* $room = new Room();
         $building = new Building();
         $building->setName("Building2");
         $building->setAddress("Address2");
@@ -56,14 +55,12 @@ class SecurityController extends AbstractController
         $room->setStatus([1,0,0,0,0,0,1]);
         $room->setCapacity(10);
 
-<<<<<<< HEAD
+
         $entityManager->persist($building);
         $entityManager->persist($user);
         $entityManager->persist($room);
-=======
-         $entityManager->persist($user);
->>>>>>> 6fcaae1c0955c58979546899170f2e245cd1880f
-        $entityManager->flush();
+
+        $entityManager->flush();*/
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
