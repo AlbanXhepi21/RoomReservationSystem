@@ -21,6 +21,7 @@ class RoomController extends AbstractController
         ]);
     }
 
+
     #[Route('/new', name: 'app_room_new', methods: ['GET', 'POST'])]
     public function new(Request $request, RoomRepository $roomRepository): Response
     {
@@ -75,4 +76,8 @@ class RoomController extends AbstractController
 
         return $this->redirectToRoute('app_room_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
 }
+
