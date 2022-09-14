@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserRegistrationFormType;
+use App\Repository\BuildingRepository;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    public function login(AuthenticationUtils $authenticationUtils, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, BuildingRepository $buildingRepository): Response
     {
         //The credentials of one user
         $user = new User();
@@ -42,7 +43,10 @@ class SecurityController extends AbstractController
         /*$entityManager->persist($user);
         $entityManager->flush();*/
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('building/index.html.twig', [
+            'last_username' => $lastUsername, 'error' => $error,
+            'buildings' => $buildingRepository->findAll(),
+            ]);
     }
 
     /**
