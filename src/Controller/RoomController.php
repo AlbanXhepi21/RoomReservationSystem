@@ -85,12 +85,5 @@ class RoomController extends BaseController
 
 
 
-    #[Route('/', name: 'app_homepage')]
-    public function homepage(){
-        return $this->render('homepage.html.twig');
-    }
-
-
-
 }
 
