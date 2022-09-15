@@ -77,6 +77,13 @@ class RoomController extends BaseController
         return $this->redirectToRoute('app_room_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/', name: 'app_homepage')]
+    public function homepage(){
+        return $this->render('homepage.html.twig');
+    }
+
+
+
 
 
 }
