@@ -48,7 +48,7 @@ class BuildingController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_building_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id</d+>}/edit', name: 'app_building_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Building $building, BuildingRepository $buildingRepository): Response
     {
         $form = $this->createForm(BuildingType::class, $building);
@@ -66,11 +66,12 @@ class BuildingController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_building_delete', methods: ['POST'])]
+    #[Route('/{idBuilding</d+>}', name: 'app_building_delete', methods: ['POST'])]
     public function delete(Request $request, Building $building, BuildingRepository $buildingRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$building->getId(), $request->request->get('_token'))) {
-            $buildingRepository->remove($building, true);
+            $buildingRepository->remove($building);
+            $buildingRepository->flush();
         }
 
         return $this->redirectToRoute('app_building_index', [], Response::HTTP_SEE_OTHER);
