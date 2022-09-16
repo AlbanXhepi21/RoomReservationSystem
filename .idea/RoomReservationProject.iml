@@ -89,12 +89,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/zenstruck/callback" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/zenstruck/foundry" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/web-profiler-bundle" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/debug-bundle" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/monolog-bridge" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/monolog-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sensio/framework-extra-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/apache-pack" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/phpunit-bridge" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

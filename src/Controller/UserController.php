@@ -2,13 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Building;
+use App\Entity\Reservation;
+use App\Entity\Room;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function Symfony\Component\String\u;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -16,7 +21,7 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
-        return $this->render('user/index.html.twig', [
+        return $this->render('user/personnelHomepage.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }
@@ -40,8 +45,68 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/book')]
+    public function book(EntityManagerInterface $entityManager):Response
+    {
+        $building= $entityManager->getRepository(Building::class);
+        $buildings = $building->findAll();
+
+        return $this->render('user/book.html.twig', [
+            'buildings' => $buildings
+        ]);
+
+
+
+    }
+    #[Route('/book/{slug}')]
+    public function singleBook($slug ,EntityManagerInterface $entityManager):Response
+    {
+        $buildingsRepo= $entityManager->getRepository(Building::class);
+        /** @var Building $building */
+        $building = $buildingsRepo->find($slug);
+
+        $rooms = $building->getRooms();
+
+
+        return $this->render('user/rooms.html.twig', [
+            'rooms' => $rooms
+        ]);
+
+
+
+    }
+    #[Route('/book/{slug}/{room}')]
+    public function singleRoom( $room ,EntityManagerInterface $entityManager):Response
+    {
+
+        $roomsRep = $entityManager->getRepository(Room::class);
+        $room = $roomsRep->find($room);
+
+        $reservationsRep = $entityManager->getRepository(Reservation::class);
+
+        $reservations = $reservationsRep->findAll();
+
+        return $this->render('user/singleRoom.html.twig', [
+            'room' =>  $room,
+            'reservations' => $reservations
+
+        ]);
+    }
+
+    #[Route('/states')]
+    public function userState( ):Response
+    {
+
+        $title = 'Personnel States Page, All States';
+
+        return $this->render('user/userAllStates.html.twig', [
+            'state' => $title
+        ]);
+
+    }
+
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user): Response
+    public function show(Request $request,User $user): Response
     {
         return $this->render('user/show.html.twig', [
             'user' => $user,
@@ -66,7 +131,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'] )]
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
@@ -75,4 +140,8 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
+
 }

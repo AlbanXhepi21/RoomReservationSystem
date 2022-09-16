@@ -2,6 +2,7 @@
 
 namespace App\Factory;
 
+use App\Entity\Building;
 use App\Entity\Room;
 use App\Repository\RoomRepository;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -35,13 +36,18 @@ final class RoomFactory extends ModelFactory
         // TODO inject services if required (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services)
     }
 
-    protected function getDefaults(): array
+    protected function getDefaults( ): array
     {
         return [
+
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'name' => self::faker()->text(),
-            'capacity' => self::faker()->randomNumber(),
-            'status' => [],
+
+
+
+//            'name' => self::faker()->text(),
+//            'building_id' => 1,
+//            'capacity' => self::faker()->randomNumber(),
+//            'status' => [1,1,1,1,1,1,1],
         ];
     }
 

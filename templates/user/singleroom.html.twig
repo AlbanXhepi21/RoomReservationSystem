@@ -1,0 +1,103 @@
+{% extends "baseUser.html.twig" %}
+
+
+{% block nav %} {{ parent() }}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        {% set date="now"|date("m/d/Y")   %}
+        <script>
+
+            function updateDate()
+            {
+                {{ date }} == document.getElementById("getDate").value;
+
+
+            }
+        </script>
+
+        <h1> Building : </h1>
+        <h2> Room : {{ room.name }}</h2>
+
+
+        <h3>Info</h3>
+        <ul>
+            <li>Id : {{ room.id }}</li>
+            <li>Building :  </li>
+            <li>Name : {{ room.name }}</li>
+            <li>Capacity : {{ room.capacity}} </li>
+            <li>date {{ "now"|date("m/d/Y") }}</li>
+        </ul>
+
+
+
+        <h3>Status</h3>  <br>
+        <label >Date </label>
+
+
+        <label for="gatDate"></label><input id="gatDate" value="{{ date }}" type="date">
+
+        <button  onclick="updateDate()"  >Search</button>
+
+        <br><br>
+
+        {% for reservation in reservations %}
+
+            {% if reservation.room.id == room.id  %}
+                {% if date == reservation.date|date("Y/m/d") %}
+                    {%  set sameDate = true %}
+
+                {% else %}
+                    {%  set sameDate = false %}
+                {% endif %}
+            {% endif %}
+
+        {% endfor %}
+
+
+
+
+
+
+        <table id="time" class="table table-bordered table-white">
+            <thead>
+            <tr>
+                <th scope="col" >9:00 -10:00 </th>
+                <th scope="col">10:00 - 11:00</th>
+                <th scope="col">11:00 - 12:00</th>
+                <th scope="col">12:00 - 1:00</th>
+                <th scope="col">1:00 - 2:00</th>
+                <th scope="col">2:00 - 3:00</th>
+                <th scope="col">3:00 - 4:00 </th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+
+            <tr>
+
+                {% for slot in room.status %}
+                <th scope="row" class="table-primary">Select</th>
+
+
+                {% endfor %}
+{#                <td class="table-warning">Reserved</td>#}
+{#                <td class="table-warning">Reserved</td>#}
+{#               <td onclick="function hello()  {#}
+{#                    }"#}
+{#                 class="table-primary"> Select </td>#}
+{#                <td class="table-warning">Reserved</td>#}
+{#                <td class="table-primary">Select</td>#}
+{#                <td class="table-primary">Select</td>#}
+
+
+            </tr>
+            </tbody>
+
+        </table>
+
+
+
+
+    </main>
+{% endblock %}
+
