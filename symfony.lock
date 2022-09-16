@@ -144,16 +144,19 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
-    "symfony/monolog-bundle": {
-        "version": "3.8",
+    "symfony/phpunit-bridge": {
+        "version": "6.1",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "3.7",
-            "ref": "213676c4ec929f046dfde5ea8e97625b81bc0578"
+            "version": "5.3",
+            "ref": "97cb3dc7b0f39c7cfc4b7553504c9d7b7795de96"
         },
         "files": [
-            "./config/packages/monolog.yaml"
+            "./.env.test",
+            "./bin/phpunit",
+            "./phpunit.xml.dist",
+            "./tests/bootstrap.php"
         ]
     },
     "symfony/routing": {
@@ -238,7 +241,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "1.10",
-            "ref": "2e458cc7e6f1df1dad890eb104b81e4f302c9bd4"
+            "ref": "ffee853f2f4355b63324ee0009ade85e5b715c30"
         },
         "files": [
             "./assets/app.js",

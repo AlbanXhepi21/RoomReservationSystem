@@ -1,0 +1,45 @@
+{% extends "baseUser.html.twig" %}
+
+
+{% block nav %} {{ parent() }}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+
+
+            <h1 class="h2">Select a Building</h1>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+
+            <table class="table">
+                <caption>List of rooms</caption>
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Building Name</th>
+                    <th scope="col">Number of Rooms</th>
+                    <th scope="col">Address</th>
+                    <th scope="col"> </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for building in buildings %}
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>{{ building.name }}</td>
+                        <td>{{ building.rooms|length }}</td>
+                        <td>{{ building.address }}</td>
+                        <td><button onclick="location.href='book/{{ building.id }}'" type="button" class="btn btn-success">Select</button></td>
+
+                    </tr>
+                {% endfor %}
+
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </main>
+{% endblock %}
+
+
+

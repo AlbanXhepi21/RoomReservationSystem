@@ -22,7 +22,7 @@ class Room
     #[ORM\Column]
     private ?int $capacity = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: Types::JSON)]
     private array $status = [];
 
     #[ORM\ManyToOne(inversedBy: 'rooms')]

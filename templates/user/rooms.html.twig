@@ -1,0 +1,41 @@
+{% extends "baseUser.html.twig" %}
+
+
+{% block nav %} {{ parent() }}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <h1>All Rooms</h1>
+
+        <table class="table">
+            <caption>List of rooms</caption>
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Room Name</th>
+                <th scope="col">Capacity</th>
+
+
+                <th scope="col"> </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for room in rooms %}
+            <tr>
+                <th scope="row">1</th>
+                <td>{{ room.name }}</td>
+                <td>{{ room.capacity }}</td>
+
+
+                <td><button onclick="location.href='{{ room.building.name }}/{{ room.id }}'" type="button" class="btn btn-success">Select</button></td>
+
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </main>
+{% endblock %}
+
+
+
