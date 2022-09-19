@@ -41,15 +41,16 @@ class BuildingController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_building_show', methods: ['GET'])]
-    public function show(Building $building): Response
+    public function show(int $id, BuildingRepository $buildingRepository): Response
     {
+        $building = $buildingRepository->findOneBy(['id'=>$id]);
         return $this->render('building/show.html.twig', [
             'building' => $building,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_building_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Building $building, BuildingRepository $buildingRepository): Response
+    #[Route('/{id}/edit', name: 'app_building_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    public function edit(int $id, Request $request, Building $building, BuildingRepository $buildingRepository): Response
     {
         $form = $this->createForm(BuildingType::class, $building);
         $form->handleRequest($request);
@@ -66,11 +67,12 @@ class BuildingController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_building_delete', methods: ['POST'])]
-    public function delete(Request $request, Building $building, BuildingRepository $buildingRepository): Response
+    #[Route('/{id}', name: 'app_building_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
+    public function delete(int $id, Request $request,BuildingRepository $buildingRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$building->getId(), $request->request->get('_token'))) {
-            $buildingRepository->remove($building, true);
+        $building = $buildingRepository->findOneBy(['id'=>$id]);
+      if ($this->isCsrfTokenValid('delete'.$id, $request->request->get('_token'))) {
+            $buildingRepository->remove($building,flush:true);
         }
 
         return $this->redirectToRoute('app_building_index', [], Response::HTTP_SEE_OTHER);
