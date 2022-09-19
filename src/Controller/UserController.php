@@ -64,10 +64,8 @@ class UserController extends BaseController
         return $this->render('user/book.html.twig', [
             'buildings' => $buildings
         ]);
-
-
-
     }
+
     #[Route('/book/{slug}')]
     public function singleBook($slug ,EntityManagerInterface $entityManager):Response
     {
@@ -82,9 +80,8 @@ class UserController extends BaseController
             'rooms' => $rooms
         ]);
 
-
-
     }
+
     #[Route('/book/{slug}/{room}')]
     public function singleRoom( $room ,EntityManagerInterface $entityManager):Response
     {
@@ -128,13 +125,15 @@ class UserController extends BaseController
     public function edit(int $id, Request $request, UserRepository $userRepository): Response
     {
         $user = $userRepository->findOneBy(['id'=>$id]);
-        $form = $this->createForm(UserRegistrationFormType::class, $user);
+        $form = $this->createForm(UserRegistrationFormType::class);
+        if(!in_array("ROLE_ADMIN",$user->getRoles())) $form->remove('roleAdmin');
+        $form->setData($user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->add($user, true);
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_user_index',[], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('security/register.html.twig', [
@@ -153,8 +152,6 @@ class UserController extends BaseController
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
 
 
 }
