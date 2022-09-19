@@ -82,22 +82,40 @@ class UserController extends BaseController
 
     }
 
-    #[Route('/book/{slug}/{room}')]
-    public function singleRoom( $room ,EntityManagerInterface $entityManager):Response
+    #[Route('/book/{slug}/{room}' , name: 'single_room')]
+    public function singleRoom($slug, $room ,EntityManagerInterface $entityManager,Request $request):Response
     {
 
         $roomsRep = $entityManager->getRepository(Room::class);
         $room = $roomsRep->find($room);
 
-        $reservationsRep = $entityManager->getRepository(Reservation::class);
+        $allReservations = $entityManager->getRepository(Reservation::class);
 
-        $reservations = $reservationsRep->findAll();
+
+        $now=new \DateTime();
+
+        $date= $request->query->get('date' ,$now->format('Y-m-d'));
+        $date=date_create_from_format('Y-m-d',$date);
+
+        $reservationsA= $allReservations->findBy(['reservationStatus'=>'approved', 'date'=>$date]);
+        $reservations=$this->getUpdatedStatus($reservationsA);
+
+
+
+
 
         return $this->render('user/singleRoom.html.twig', [
             'room' =>  $room,
-            'reservations' => $reservations
+            'reservations' => $reservations,
+            'date' =>$date,
+            'slug' =>$slug
+
 
         ]);
+
+
+
+
     }
 
     #[Route('/states')]
@@ -153,6 +171,29 @@ class UserController extends BaseController
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    /**
+     * @param $status array|Reservation[]
+     * @return int[]
+     */
+    public function getUpdatedStatus(array $reservations): array
+    {
+        $result=[1,1,1,1,1,1,1];
+        /** @var Reservation $reservation */
+        foreach($reservations as $reservation)
+       {
+           $status=$reservation->getStatus();
+           foreach($status as $key=>$value)
+           {
+               if($result[$key]!= $value && $result[$key]==1)
+               {
+
+                   $result[$key]=$value;
+               }
+           }
+       }
+
+        return $result;
+    }
 
 }
 

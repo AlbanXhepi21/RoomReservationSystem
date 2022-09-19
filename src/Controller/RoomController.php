@@ -14,6 +14,21 @@ class RoomController extends BaseController
 {
 
 
+
+
+
+
+
+    #[Route('/room/show', name: 'app_room_index')]
+    public function index(RoomRepository $roomRepository): Response
+    {
+        $room = $roomRepository->findOneBy(['id' => '1']);
+        return $this->render('room/show.html.twig',
+            ['room' => $room]);
+    }
+
+
+
     #[Route('/room/new', name: 'app_room_new', methods: ['GET', 'POST'])]
     public function new(Request $request, RoomRepository $roomRepository): Response
     {
@@ -33,13 +48,7 @@ class RoomController extends BaseController
         ]);
     }
 
-    #[Route('/room/', name: 'app_room_index', methods: ['GET'])]
-    public function index(RoomRepository $roomRepository): Response
-    {
-        return $this->render('room/index.html.twig', [
-            'rooms' => $roomRepository->findAll(),
-        ]);
-    }
+   
 
     #[Route('/room/{id}', name: 'app_room_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(int $id, RoomRepository $roomRepository): Response
