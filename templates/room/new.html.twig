@@ -3,9 +3,24 @@
 {% block title %}New Room{% endblock %}
 
 {% block body %}
-    <h1>Create new Room</h1>
 
-    {{ include('room/_form.html.twig') }}
+    <section class="vh-100" style="background-color: #89c3d2;">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                        <h3 style="text-align: center; color: #005cc5;"> NEW ROOM</h3>
+                        <div class="card-body p-5">
+                            {{ include('room/_form.html.twig') }}
 
-    <a href="{{ path('app_room_index') }}">back to list</a>
+                            <a href="{{ path('app_room_index') }}">back to list</a>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
+

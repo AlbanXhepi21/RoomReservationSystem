@@ -13,14 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoomController extends BaseController
 {
 
-    #[Route('/room/show', name: 'app_room_index')]
-    public function index(RoomRepository $roomRepository): Response
-    {
-        $room = $roomRepository->findOneBy(['id' => '1']);
-        return $this->render('room/show.html.twig',
-            ['room' => $room]);
-    }
-
 
     #[Route('/room/new', name: 'app_room_new', methods: ['GET', 'POST'])]
     public function new(Request $request, RoomRepository $roomRepository): Response
@@ -41,17 +33,27 @@ class RoomController extends BaseController
         ]);
     }
 
-    #[Route('/room/{id}', name: 'app_room_show', methods: ['GET'])]
-    public function show(Room $room): Response
+    #[Route('/room/', name: 'app_room_index', methods: ['GET'])]
+    public function index(RoomRepository $roomRepository): Response
     {
+        return $this->render('room/index.html.twig', [
+            'rooms' => $roomRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/room/{id}', name: 'app_room_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function show(int $id, RoomRepository $roomRepository): Response
+    {
+        $room = $roomRepository->findOneBy(['id'=>$id]);
         return $this->render('room/show.html.twig', [
             'room' => $room,
         ]);
     }
 
-    #[Route('/room/{id}/edit', name: 'app_room_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Room $room, RoomRepository $roomRepository): Response
+    #[Route('/room/{id}/edit', name: 'app_room_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    public function edit(int $id, Request $request, RoomRepository $roomRepository): Response
     {
+        $room = $roomRepository->findOneBy(['id'=>$id]);
         $form = $this->createForm(RoomType::class, $room);
         $form->handleRequest($request);
 
@@ -67,15 +69,17 @@ class RoomController extends BaseController
         ]);
     }
 
-    #[Route('/room/{id}', name: 'app_room_delete', methods: ['POST'])]
-    public function delete(Request $request, Room $room, RoomRepository $roomRepository): Response
+    #[Route('/room/{id}', name: 'app_room_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
+    public function delete(int $id, Request $request, RoomRepository $roomRepository): Response
     {
-        /*if ($this->isCsrfTokenValid('delete'.$room->getId(), $request->request->get('_token'))) {
+        $room = $roomRepository->findOneBy(['id'=>$id]);
+        if ($this->isCsrfTokenValid('delete'.$room->getId(), $request->request->get('_token'))) {
             $roomRepository->remove($room, true);
         }
-            */
+
         return $this->redirectToRoute('app_room_index', [], Response::HTTP_SEE_OTHER);
     }
+
 
     #[Route('/', name: 'app_homepage')]
     public function homepage(){
