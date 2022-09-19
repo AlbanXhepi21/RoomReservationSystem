@@ -6,6 +6,7 @@ use App\Entity\Building;
 use App\Entity\Reservation;
 use App\Entity\Room;
 use App\Entity\User;
+use App\Form\UserRegistrationFormType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,10 +20,18 @@ use function Symfony\Component\String\u;
 class UserController extends BaseController
 {
 
-    #[Route('/', name: 'app_user_index', methods: ['GET'])]
+    #[Route('/index', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/personnelHomepage.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/show', name: 'app_users_show', methods: ['GET'])]
+    public function show(UserRepository $userRepository): Response
+    {
+        return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }
@@ -31,7 +40,7 @@ class UserController extends BaseController
     public function new(Request $request, UserRepository $userRepository): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserRegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -55,10 +64,8 @@ class UserController extends BaseController
         return $this->render('user/book.html.twig', [
             'buildings' => $buildings
         ]);
-
-
-
     }
+
     #[Route('/book/{slug}')]
     public function singleBook($slug ,EntityManagerInterface $entityManager):Response
     {
@@ -73,25 +80,42 @@ class UserController extends BaseController
             'rooms' => $rooms
         ]);
 
-
-
     }
-    #[Route('/book/{slug}/{room}')]
-    public function singleRoom( $room ,EntityManagerInterface $entityManager):Response
+
+    #[Route('/book/{slug}/{room}' , name: 'single_room')]
+    public function singleRoom($slug, $room ,EntityManagerInterface $entityManager,Request $request):Response
     {
 
         $roomsRep = $entityManager->getRepository(Room::class);
         $room = $roomsRep->find($room);
 
-        $reservationsRep = $entityManager->getRepository(Reservation::class);
+        $allReservations = $entityManager->getRepository(Reservation::class);
 
-        $reservations = $reservationsRep->findAll();
+
+        $now=new \DateTime();
+
+        $date= $request->query->get('date' ,$now->format('Y-m-d'));
+        $date=date_create_from_format('Y-m-d',$date);
+
+        $reservationsA= $allReservations->findBy(['reservationStatus'=>'approved', 'date'=>$date]);
+        $reservations=$this->getUpdatedStatus($reservationsA);
+
+
+
+
 
         return $this->render('user/singleRoom.html.twig', [
             'room' =>  $room,
-            'reservations' => $reservations
+            'reservations' => $reservations,
+            'date' =>$date,
+            'slug' =>$slug
+
 
         ]);
+
+
+
+
     }
 
     #[Route('/states')]
@@ -106,44 +130,70 @@ class UserController extends BaseController
 
     }
 
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(Request $request,User $user): Response
+    #[Route('/{id}', name: 'app_user_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function view(int $id, Request $request, UserRepository $userRepository): Response
     {
+        $user = $userRepository->findOneBy(['id'=>$id]);
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    public function edit(int $id, Request $request, UserRepository $userRepository): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $user = $userRepository->findOneBy(['id'=>$id]);
+        $form = $this->createForm(UserRegistrationFormType::class);
+        if(!in_array("ROLE_ADMIN",$user->getRoles())) $form->remove('roleAdmin');
+        $form->setData($user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->add($user, true);
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_user_index',[], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user/edit.html.twig', [
+        return $this->renderForm('security/register.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'registrationForm' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'] )]
-    public function delete(Request $request, User $user, UserRepository $userRepository): Response
+    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'], requirements: ['id' => '\d+'] )]
+    public function delete(int $id, Request $request, UserRepository $userRepository): Response
     {
-       /* if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        $user = $userRepository->findOneBy(['id'=>$id]);
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $userRepository->remove($user, true);
         }
-*/
+
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    /**
+     * @param $status array|Reservation[]
+     * @return int[]
+     */
+    public function getUpdatedStatus(array $reservations): array
+    {
+        $result=[1,1,1,1,1,1,1];
+        /** @var Reservation $reservation */
+        foreach($reservations as $reservation)
+       {
+           $status=$reservation->getStatus();
+           foreach($status as $key=>$value)
+           {
+               if($result[$key]!= $value && $result[$key]==1)
+               {
 
+                   $result[$key]=$value;
+               }
+           }
+       }
 
+        return $result;
+    }
 
 }
 

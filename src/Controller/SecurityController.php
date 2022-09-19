@@ -85,6 +85,9 @@ class SecurityController extends AbstractController
                              LoginFormAuthenticator $formAuthenticator,Security $security){
 
         $form = $this->createForm( UserRegistrationFormType::class);
+        if(!$this->isGranted('ROLE_ADMIN')){
+            $form->remove('roleAdmin');
+        }
         $form->handleRequest($request);
 
 
@@ -93,17 +96,21 @@ class SecurityController extends AbstractController
             $user = $form->getData();
 
 
-            if ($this->isGranted('ROLE_ADMIN')){
-                $roles[] = 'ROLE_ADMIN';
-                $user->setRoles(array_unique($roles));
-            }
-
 
             $user->setPassword($passwordHasher->hashPassword($user,$form['plainPassword']->getData()));
 
             if (true === $form['agreeTerms']->getData()) {
                 $user->agreeTerms();
             }
+
+            if (true === $form['roleAdmin']->getData()) {
+                $roles[] = 'ROLE_ADMIN';
+                $user->setRoles(array_unique($roles));
+            }
+            else{
+                $user->setRoles();
+            }
+
 
             $em->persist($user);
             $em->flush();

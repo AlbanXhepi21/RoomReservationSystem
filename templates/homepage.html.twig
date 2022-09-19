@@ -12,58 +12,7 @@
   {% endblock %}
 {% block body %}
     <body id="page-top">
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color: black;">
-            <div class="container">
-                <a class="navbar-brand" href="#page-top"> <img src="img/navbar-logo.jpg" alt="..." /></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars ms-1"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact" >Contact</a></li>
-                    </ul>
-
-                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                        <div class="dropdown">
-                            <button
-                                    class="dropdown-toggle btn"
-                                    type="button"
-                                    id="user-dropdown"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                            >
-                                <img
-                                        src="https://ui-avatars.com/api/?name={{ app.user.firstName }}|url_encode&size=32&background=random"
-                                        alt="{{ app.user.firstName }}Avatar">
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown">
-                                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                                    <li>
-                                        <a class="dropdown-item" href="{{ path('app_homepage', {
-                                            '_switch_user': '_exit'
-                                        }) }}">Exit Impersonation</a>
-                                    </li>
-                                {% endif %}
-                                <li>
-                                    <a class="dropdown-item" href="{{ path('app_logout') }}">Log Out</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                    {% else %}
-                        <a href="{{ path('app_login') }}" class="btn btn-dark" style="margin-left: 50px; margin-right: 20px;">Sign In</a>
-                        <a href="{{ path('app_register') }}" class="btn btn-dark">Sign up</a>
-                    {% endif %}
-                </div>
-                </div>
-            </div>
-        </nav>
+       {% include 'base_user.html.twig' %}
         <!-- Masthead-->
         <header class="masthead" style="background-image: url('/img/rooms/room3.jpg');">
             <div class="container">

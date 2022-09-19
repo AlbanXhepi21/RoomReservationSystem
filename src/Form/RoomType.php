@@ -25,7 +25,6 @@ class RoomType extends AbstractType
         $builder
             ->add('name')
             ->add('capacity')
-            ->add('status')
             ->add('building',  EntityType::class,
                 [
                     'class' => Building::class,

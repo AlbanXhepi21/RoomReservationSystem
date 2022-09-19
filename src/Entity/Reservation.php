@@ -21,7 +21,7 @@ class Reservation
     private array $status = [];
 
     #[ORM\Column(length: 255)]
-    private ?string $reservationStatus = null;
+    private ?string $reservationStatus = 'pending';
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Room $room = null;
