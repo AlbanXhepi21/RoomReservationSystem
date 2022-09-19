@@ -3,15 +3,42 @@
 
 {% block nav %} {{ parent() }}
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        {% set date="now"|date("m/d/Y")   %}
+
+
+
         <script>
 
-            function updateDate()
-            {
-                {{ date }} == document.getElementById("getDate").value;
+            $(document).ready(function () {
+                var isMouseDown = false;
+                var lastTr = -1;
+
+                $('body').mousedown(function() {
+                    isMouseDown = true;
+                    $('td').removeClass('highlight');
+                })
+                    .mouseup(function() {
+                        isMouseDown = false;
+                    });
+
+                $("table td").hover(function(){
+                    var ctr = $(this).closest('tr').index();
+                    lastTr = lastTr === -1 ? ctr : lastTr;
+
+                    if (isMouseDown)
+                        if (lastTr !== ctr)
+                            $('td').removeClass('highlight');
+                        else
+                            $(this).addClass("highlight");
+
+                    lastTr = $(this).closest('tr').index();
+                });
+
+                $("table td").click(function(){
+                    $(this).toggleClass('highlight');
+                });
+            });
 
 
-            }
         </script>
 
         <h1> Building : </h1>
@@ -24,33 +51,21 @@
             <li>Building :  </li>
             <li>Name : {{ room.name }}</li>
             <li>Capacity : {{ room.capacity}} </li>
-            <li>date {{ "now"|date("m/d/Y") }}</li>
+            <li>date {{ date|date('Y-m-d') }}</li>
         </ul>
 
 
 
         <h3>Status</h3>  <br>
-        <label >Date </label>
+        <form method="get" name="form" action="{{ path('single_room',{'slug':slug, 'room':room.id}) }}">
+            <input name="date" id="date" value="{{ date|date('Y-m-d') }}" type="date">
+            <input type="submit" value="Submit">
+        </form>
 
-
-        <label for="gatDate"></label><input id="gatDate" value="{{ date }}" type="date">
-
-        <button  onclick="updateDate()"  >Search</button>
 
         <br><br>
 
-        {% for reservation in reservations %}
 
-            {% if reservation.room.id == room.id  %}
-                {% if date == reservation.date|date("Y/m/d") %}
-                    {%  set sameDate = true %}
-
-                {% else %}
-                    {%  set sameDate = false %}
-                {% endif %}
-            {% endif %}
-
-        {% endfor %}
 
 
 
@@ -75,8 +90,15 @@
 
             <tr>
 
-                {% for slot in room.status %}
-                <th scope="row" class="table-primary">Select</th>
+
+
+                {% for slot in reservations %}
+                    {% if slot == 1 %}
+                        <th scope="row" class="table-primary">Select</th>
+                    {% elseif slot == 0 %}
+                        <th scope="row" class="table-danger">Full</th>
+
+                    {% endif %}
 
 
                 {% endfor %}

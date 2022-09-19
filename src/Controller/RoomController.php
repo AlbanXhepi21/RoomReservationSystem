@@ -13,6 +13,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoomController extends BaseController
 {
 
+
+
+
+
+
     #[Route('/room/show', name: 'app_room_index')]
     public function index(RoomRepository $roomRepository): Response
     {
