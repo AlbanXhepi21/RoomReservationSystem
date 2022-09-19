@@ -4,15 +4,17 @@
 {% block nav %} {{ parent() }}
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         {% set date="now"|date("m/d/Y")   %}
-        <script>
+{#        <script>#}
 
-            function updateDate()
-            {
-                {{ date }} == document.getElementById("getDate").value;
+{#            function updateDate()#}
+{#            {#}
 
+{#                const dates= document.getElementById("getDate").value;#}
+{#                console.log(dates);#}
+{#                {{_self.jsVar(dates, 'dates')}}#}
 
-            }
-        </script>
+{#            }#}
+{#        </script>#}
 
         <h1> Building : </h1>
         <h2> Room : {{ room.name }}</h2>
@@ -24,7 +26,7 @@
             <li>Building :  </li>
             <li>Name : {{ room.name }}</li>
             <li>Capacity : {{ room.capacity}} </li>
-            <li>date {{ "now"|date("m/d/Y") }}</li>
+            <li>date {{ date }}</li>
         </ul>
 
 
@@ -33,7 +35,7 @@
         <label >Date </label>
 
 
-        <label for="gatDate"></label><input id="gatDate" value="{{ date }}" type="date">
+        <label for="gatDate"></label><input id="getDate" value="{{ date }}" type="date">
 
         <button  onclick="updateDate()"  >Search</button>
 
