@@ -48,7 +48,7 @@ class RoomController extends BaseController
         ]);
     }
 
-   
+
 
     #[Route('/room/{id}', name: 'app_room_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(int $id, RoomRepository $roomRepository): Response

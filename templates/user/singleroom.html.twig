@@ -2,44 +2,17 @@
 
 
 {% block nav %} {{ parent() }}
+    <style>
+        .Selected{
+            background-color: lightgreen!important;
+        }
+    </style>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
 
 
-        <script>
-
-            $(document).ready(function () {
-                var isMouseDown = false;
-                var lastTr = -1;
-
-                $('body').mousedown(function() {
-                    isMouseDown = true;
-                    $('td').removeClass('highlight');
-                })
-                    .mouseup(function() {
-                        isMouseDown = false;
-                    });
-
-                $("table td").hover(function(){
-                    var ctr = $(this).closest('tr').index();
-                    lastTr = lastTr === -1 ? ctr : lastTr;
-
-                    if (isMouseDown)
-                        if (lastTr !== ctr)
-                            $('td').removeClass('highlight');
-                        else
-                            $(this).addClass("highlight");
-
-                    lastTr = $(this).closest('tr').index();
-                });
-
-                $("table td").click(function(){
-                    $(this).toggleClass('highlight');
-                });
-            });
 
 
-        </script>
 
         <h1> Building : </h1>
         <h2> Room : {{ room.name }}</h2>
@@ -90,18 +63,21 @@
 
             <tr>
 
-
-
                 {% for slot in reservations %}
                     {% if slot == 1 %}
-                        <th scope="row" class="table-primary">Select</th>
+
+                            <td   class=" time-slot Selected">Select</td>
+
                     {% elseif slot == 0 %}
-                        <th scope="row" class="table-danger">Full</th>
+
+                            <td  class=" time-slot">Full</td>
 
                     {% endif %}
 
 
                 {% endfor %}
+            </tr>
+
 {#                <td class="table-warning">Reserved</td>#}
 {#                <td class="table-warning">Reserved</td>#}
 {#               <td onclick="function hello()  {#}
@@ -112,7 +88,22 @@
 {#                <td class="table-primary">Select</td>#}
 
 
-            </tr>
+            <script>
+                var elements = Array.from( document.querySelectorAll(".time-slot"));
+
+                console.log(elements);
+
+                elements.forEach(function (element)
+                {
+                    element.addEventListener("click",function (e)
+                    {
+                        console.log(e.target)
+                        e.target.classList.toggle("Selected");
+                    })
+                })
+            </script>
+
+
             </tbody>
 
         </table>
