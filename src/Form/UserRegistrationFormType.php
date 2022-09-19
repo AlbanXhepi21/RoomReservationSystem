@@ -17,9 +17,25 @@ class UserRegistrationFormType extends AbstractType
     {
         $builder
             ->add('email')
-            //dont need to add the role as by default all have the ROLE_USER
             ->add('firstName')
             ->add('lastName')
+            ->add('roleAdmin', CheckboxType::class,[
+                'mapped' => true,
+                'required'=> false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'You have to choose the role'
+                    ])
+                ]
+            ])
+            ->add('roleUser', CheckboxType::class,[
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'You have to choose the role'
+                    ])
+                ]
+            ])
             ->add('plainPassword', null, [
                 'mapped'=> false,
                 'constraints' => [

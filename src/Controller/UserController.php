@@ -6,6 +6,7 @@ use App\Entity\Building;
 use App\Entity\Reservation;
 use App\Entity\Room;
 use App\Entity\User;
+use App\Form\UserRegistrationFormType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,10 +20,18 @@ use function Symfony\Component\String\u;
 class UserController extends BaseController
 {
 
-    #[Route('/', name: 'app_user_index', methods: ['GET'])]
+    #[Route('/index', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/personnelHomepage.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/show', name: 'app_users_show', methods: ['GET'])]
+    public function show(UserRepository $userRepository): Response
+    {
+        return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }
@@ -31,7 +40,7 @@ class UserController extends BaseController
     public function new(Request $request, UserRepository $userRepository): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserRegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -107,7 +116,7 @@ class UserController extends BaseController
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function show(int $id, Request $request, UserRepository $userRepository): Response
+    public function view(int $id, Request $request, UserRepository $userRepository): Response
     {
         $user = $userRepository->findOneBy(['id'=>$id]);
         return $this->render('user/show.html.twig', [
@@ -119,7 +128,7 @@ class UserController extends BaseController
     public function edit(int $id, Request $request, UserRepository $userRepository): Response
     {
         $user = $userRepository->findOneBy(['id'=>$id]);
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserRegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -128,9 +137,9 @@ class UserController extends BaseController
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user/edit.html.twig', [
+        return $this->renderForm('security/register.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'registrationForm' => $form,
         ]);
     }
 

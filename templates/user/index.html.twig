@@ -27,7 +27,7 @@
                 <td>{{ user.password }}</td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
-                <td>{{ user.agreedTermsAt ? user.agreedTermsAt|date('Y-m-d') : '' }}</td>
+                <td>{{ user.agreedTermsAt|date('Y-m-d') }}</td>
                 <td>
                     <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
                     <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
