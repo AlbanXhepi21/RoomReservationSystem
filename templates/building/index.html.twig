@@ -22,7 +22,7 @@
                 <td>{{ building.address }}</td>
                 <td>
                     <a href="{{ path('app_building_show', {'id': building.id}) }}">show</a>
-                    <a href="{{ path('app_building_delete', {'idBuilding': building.id}) }}">Delete</a>
+                    <a href="{{ path('app_building_delete', {'id': building.id}) }}">Delete</a>
                 </td>
             </tr>
         {% else %}
