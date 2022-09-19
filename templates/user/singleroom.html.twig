@@ -8,27 +8,9 @@
         }
     </style>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-<<<<<<< HEAD
-        {% set date="now"|date("m/d/Y")   %}
-{#        <script>#}
-
-{#            function updateDate()#}
-{#            {#}
-=======
->>>>>>> b44fb764bcaacc6a744686812876239a35607245
-
-{#                const dates= document.getElementById("getDate").value;#}
-{#                console.log(dates);#}
-{#                {{_self.jsVar(dates, 'dates')}}#}
-
-<<<<<<< HEAD
-{#            }#}
-{#        </script>#}
-=======
 
 
 
->>>>>>> b44fb764bcaacc6a744686812876239a35607245
 
         <h1> Building : </h1>
         <h2> Room : {{ room.name }}</h2>
@@ -41,7 +23,7 @@
             <li>Name : {{ room.name }}</li>
             <li>Capacity : {{ room.capacity}} </li>
 
-            <li>date {{ date|date('Y-m-d') }}</li>
+            <li>date {{ date|date('Y-m-d')  }}</li>
 
         </ul>
 
@@ -50,7 +32,7 @@
         <h3>Status</h3>  <br>
         <form method="get" name="form" action="{{ path('single_room',{'slug':slug, 'room':room.id}) }}">
             <input name="date" id="date" value="{{ date|date('Y-m-d') }}" type="date">
-            <input type="submit" value="Submit">
+            <input type="submit" value="Search">
         </form>
 
 
@@ -81,22 +63,28 @@
             <tbody>
 
 
+            {%set i=0 %}
             <tr>
 
                 {% for slot in reservations %}
+                    {% set i=i+1 %}
                     {% if slot == 1 %}
 
-                            <td   class=" time-slot Selected">Select</td>
+                            <td id="{{ i }}"  class=" table-primary time-slot">Select</td>
 
                     {% elseif slot == 0 %}
 
-                            <td  class=" time-slot">Full</td>
+                            <td {{ i}} class="table-danger">Full</td>
 
                     {% endif %}
 
 
                 {% endfor %}
             </tr>
+
+
+
+
 
 {#                <td class="table-warning">Reserved</td>#}
 {#                <td class="table-warning">Reserved</td>#}
@@ -108,19 +96,78 @@
 {#                <td class="table-primary">Select</td>#}
 
 
+
+            <form method="get" name="submit" action="{{ path('single_room',{'slug':slug, 'room':room.id}) }}">
+                <input type="hidden" name="status_array" id="status_array">
+                <input type="hidden" name="date" id="date" value="{{ date|date('Y-m-d') }}">
+                <input type="submit" value="Submit">
+            </form>
+
             <script>
+                const status = [1,1,1,1,1,1,1];
                 var elements = Array.from( document.querySelectorAll(".time-slot"));
 
-                console.log(elements);
+
+
+
+
+
 
                 elements.forEach(function (element)
                 {
                     element.addEventListener("click",function (e)
                     {
-                        console.log(e.target)
+
                         e.target.classList.toggle("Selected");
+                        if(e.target.innerHTML==='Selected')
+                        {
+                            e.target.innerHTML='Select';
+
+                            for(let i=0;i<7;i++)
+                            {
+                                if(i===parseInt(e.target.id))
+                                {
+                                    status[i-1]=1;
+                                }
+
+                            }
+
+
+                        }
+
+                        else
+                        {
+                            e.target.innerHTML='Selected';
+
+                            for(let i=0;i<7;i++)
+                            {
+                                if(i===parseInt(e.target.id))
+                                {
+                                    status[i-1]=0;
+                                }
+                            }
+
+                        }
+
+
+
+
+                         document.getElementById("status_array").value=status;
                     })
+
+
+
+
+
                 })
+
+
+
+
+
+
+
+
             </script>
 
 

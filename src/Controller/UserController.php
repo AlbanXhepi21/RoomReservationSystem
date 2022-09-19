@@ -100,6 +100,50 @@ class UserController extends BaseController
         $reservationsA= $allReservations->findBy(['reservationStatus'=>'approved', 'date'=>$date]);
         $reservations=$this->getUpdatedStatus($reservationsA);
 
+        $userReservation= $allReservations->findBy(['user'=>$this->getUser()]);
+
+
+
+        $newStatus= $request->query->get('status_array' ,null);
+
+        $intArray = array_map(
+            function($value) { return (int)$value; },
+            explode(',',$newStatus)
+        );
+        $repeat=true;
+
+        foreach ($userReservation as $singleReservation)
+            {
+
+                if($singleReservation->getStatus()===$intArray)
+                {
+                    $repeat=false;
+                }
+            }
+
+            if($newStatus != null && explode(',',$newStatus) != [1,1,1,1,1,1,1]  && $repeat)
+            {
+
+
+
+                $newReservation = new Reservation();
+
+
+                $newReservation->setStatus($intArray);
+                $newReservation->setDate($date);
+                $newReservation->setRoom($room);
+                $newReservation->setUser($this->getUser());
+
+
+
+                $entityManager->persist($newReservation);
+                $entityManager->flush();
+            }
+
+
+
+
+
 
 
 
@@ -117,6 +161,8 @@ class UserController extends BaseController
 
 
     }
+
+
 
     #[Route('/states')]
     public function userState( ):Response
