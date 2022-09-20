@@ -20,7 +20,7 @@ use function Symfony\Component\String\u;
 class UserController extends BaseController
 {
 
-    #[Route('/index', name: 'app_user_index', methods: ['GET'])]
+    #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/personnelHomepage.html.twig', [
@@ -97,8 +97,45 @@ class UserController extends BaseController
         $date= $request->query->get('date' ,$now->format('Y-m-d'));
         $date=date_create_from_format('Y-m-d',$date);
 
-        $reservationsA= $allReservations->findBy(['reservationStatus'=>'approved', 'date'=>$date]);
+        $reservationsA= $allReservations->findBy(['reservationStatus'=>'approved', 'date'=>$date,'room'=>$room]);
         $reservations=$this->getUpdatedStatus($reservationsA);
+
+        $userReservation= $allReservations->findBy(['user'=>$this->getUser(),'date'=>$date,'room'=>$room]);
+
+
+
+        $newStatus= $request->query->get('status_array' ,null);
+
+        $intArray = array_map(
+            function($value) { return (int)$value; },
+            explode(',',$newStatus)
+        );
+        $repeat=true;
+
+        foreach ($userReservation as $singleReservation)
+            {
+
+                if($singleReservation->getStatus()===$intArray)
+                {
+                    $repeat=false;
+                }
+            }
+
+            if($newStatus != null && explode(',',$newStatus) != [1,1,1,1,1,1,1]  && $repeat)
+            {
+                $newReservation = new Reservation();
+                $newReservation->setStatus($intArray);
+                $newReservation->setDate($date);
+                $newReservation->setRoom($room);
+                $newReservation->setUser($this->getUser());
+
+                $entityManager->persist($newReservation);
+                $entityManager->flush();
+            }
+
+
+
+
 
 
 
@@ -117,6 +154,8 @@ class UserController extends BaseController
 
 
     }
+
+
 
     #[Route('/states')]
     public function userState( ):Response

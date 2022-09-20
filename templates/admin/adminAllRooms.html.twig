@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+
+
+{% block nav %} {{ parent() }}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <h1>All Rooms</h1>
+
+        <table class="table">
+            <caption>List of rooms</caption>
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Room Name</th>
+                <th scope="col">Capacity</th>
+                <th scope="col">Status</th>
+                <th scope="col">Price</th>
+                <th scope="col"> </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for room in rooms %}
+            <tr>
+                <th scope="row">{{ room.id }}</th>
+                <td>{{ room.name }}</td>
+                <td>{{ room.capacity }}</td>
+                <td>free</td>
+                <td>$100</td>
+                <td><button onclick="location.href='/admin/rooms/{{room.id}}'" type="button" class="btn btn-info">More Info</button></td>
+
+           {% endfor %}
+            </tbody>
+        </table>
+
+    </main>
+{% endblock %}
+
+
+
