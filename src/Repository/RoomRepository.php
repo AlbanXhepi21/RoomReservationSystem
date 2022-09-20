@@ -14,6 +14,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Room[]    findAll()
  * @method Room[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+
+
 class RoomRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -54,13 +56,5 @@ class RoomRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Room
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+
 }

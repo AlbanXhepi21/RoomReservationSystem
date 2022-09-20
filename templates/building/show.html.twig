@@ -1,8 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_admin.html.twig' %}
 
 {% block title %}Building{% endblock %}
 
-{% block body %}
+{% block nav %} {{ parent() }}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
     <h1>Building</h1>
 
     <table class="table">
@@ -22,9 +24,8 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_building_index') }}">back to list</a>
+    <button onclick="location.href='{{ path('app_building_index') }}'" type="button" class="btn btn-success ml-1">Back</button>
+    <button onclick="location.href='{{ path("app_building_rooms", {'id': building.id}) }}'" type="button" class="btn btn-success ml-1">View Rooms</button>
 
-    <a href="{{ path('app_building_edit', {'id': building.id}) }}">edit</a>
 
-    {{ include('building/_delete_form.html.twig') }}
 {% endblock %}

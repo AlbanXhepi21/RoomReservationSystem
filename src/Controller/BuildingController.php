@@ -21,6 +21,17 @@ class BuildingController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/rooms', name: 'app_building_rooms', methods: ['GET'], requirements: ['id'=>'\d+'])]
+    public function viewRooms(int $id, BuildingRepository $buildingRepository): Response
+    {
+        $building = $buildingRepository->findOneby(['id'=>$id]);
+        $rooms = $building->getRooms();
+        return $this->render('room/index.html.twig', [
+            'rooms' => $rooms,
+        ]);
+    }
+
+
     #[Route('/new', name: 'app_building_new', methods: ['GET', 'POST'])]
     public function new(Request $request, BuildingRepository $buildingRepository): Response
     {
