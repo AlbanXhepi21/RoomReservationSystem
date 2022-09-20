@@ -6,14 +6,14 @@ use App\Entity\Building;
 use App\Entity\Reservation;
 use App\Entity\Room;
 use App\Entity\User;
+use App\Form\AskForReservationType;
 use App\Form\UserRegistrationFormType;
+use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use function Symfony\Component\String\u;
 
 #[Route('/user')]
 class UserController extends BaseController
@@ -26,6 +26,7 @@ class UserController extends BaseController
             'users' => $userRepository->findAll(),
         ]);
     }
+
 
     #[Route('/show', name: 'app_users_show', methods: ['GET'])]
     public function show(UserRepository $userRepository): Response
@@ -51,6 +52,23 @@ class UserController extends BaseController
         return $this->renderForm('user/new.html.twig', [
             'user' => $user,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/ask', name: "app_reservation_ask")]
+    public function askReservation(Request $request, RoomRepository $roomRepository){
+
+        $form = $this->createForm(AskForReservationType::class);
+        $form->handleRequest($request);
+        $ask_data = $form->getData();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            return $this->redirectToRoute('app_room_index', ['ask'=>$ask_data], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('user/ask_form.html.twig', [
+            'askForm' => $form
         ]);
     }
 
