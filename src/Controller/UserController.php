@@ -106,6 +106,7 @@ class UserController extends BaseController
 
         $newStatus= $request->query->get('status_array' ,null);
 
+
         $intArray = array_map(
             function($value) { return (int)$value; },
             explode(',',$newStatus)
