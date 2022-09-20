@@ -14,17 +14,12 @@ class RoomController extends BaseController
 {
 
 
-
-
-
-
-
-    #[Route('/room/show', name: 'app_room_index')]
+    #[Route('/room/', name: 'app_room_index')]
     public function index(RoomRepository $roomRepository): Response
     {
-        $room = $roomRepository->findOneBy(['id' => '1']);
-        return $this->render('room/show.html.twig',
-            ['room' => $room]);
+        $rooms = $roomRepository->findAll();
+        return $this->render('room/index.html.twig',
+            ['rooms' => $rooms]);
     }
 
 

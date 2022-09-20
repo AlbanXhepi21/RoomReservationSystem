@@ -50,8 +50,9 @@ class BuildingController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_building_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
-    public function edit(int $id, Request $request, Building $building, BuildingRepository $buildingRepository): Response
+    public function edit(int $id, Request $request, BuildingRepository $buildingRepository): Response
     {
+        $building = $buildingRepository->findOneBy(['id'=>$id]);
         $form = $this->createForm(BuildingType::class, $building);
         $form->handleRequest($request);
 

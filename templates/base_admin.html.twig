@@ -6,13 +6,9 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>Dashboard Template Â· Bootstrap v5.0</title>
+    <title>Admin Dashboard</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
-
-
-
-
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
@@ -46,16 +42,7 @@
 </head>
 <body>
 {% block nav %}
-{% if(false) %}
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Admin Homepage</a>
 
-    <div class="navbar-nav">
-        <div class="nav-item text-nowrap">
-            <a class="nav-link px-3" href="#">Sign out</a>
-        </div>
-    </div>
-</header>
 
 <div class="container-fluid">
     <div class="row">
@@ -63,30 +50,24 @@
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/admin/">
+                        <a class="nav-link active" aria-current="page" href="/user/">
                             <span data-feather="home"></span>
                             Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/rooms/">
+                        <a class="nav-link" href="/user/book">
                             <span data-feather="file"></span>
-                            Rooms
+                            Book
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/personnel/">
+                        <a class="nav-link" href="/user/states/">
                             <span data-feather="shopping-cart"></span>
-                            Personnel
+                            State
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/requests">
-                            <span data-feather="file"></span>
-                            Requests
-                        </a>
-                    </li>
 
                 </ul>
             </div>
@@ -96,54 +77,12 @@
 
 
 
-        {% endif %}
 
-        {% if(true) %}
-        <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Personnel Homepage</a>
+        {% endblock %}
 
-            <div class="navbar-nav">
-                <div class="nav-item text-nowrap">
-                    <a class="nav-link px-3" href="#">Sign out</a>
-                </div>
-            </div>
-        </header>
+        {% block body %}
 
-        <div class="container-fluid">
-            <div class="row">
-                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                    <div class="position-sticky pt-3">
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/">
-                                    <span data-feather="home"></span>
-                                    Dashboard
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/book">
-                                    <span data-feather="file"></span>
-                                    Book
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/states/">
-                                    <span data-feather="shopping-cart"></span>
-                                    State
-                                </a>
-                            </li>
-
-
-                        </ul>
-                    </div>
-                </nav>
-
-
-
-
-
-                {% endif %}
-                {% endblock %}
+        {% endblock %}
 
 </body>
 </html>

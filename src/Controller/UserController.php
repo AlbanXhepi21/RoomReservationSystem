@@ -7,7 +7,6 @@ use App\Entity\Reservation;
 use App\Entity\Room;
 use App\Entity\User;
 use App\Form\UserRegistrationFormType;
-use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -145,7 +144,6 @@ class UserController extends BaseController
         $user = $userRepository->findOneBy(['id'=>$id]);
         $form = $this->createForm(UserRegistrationFormType::class);
         if(!in_array("ROLE_ADMIN",$user->getRoles())) $form->remove('roleAdmin');
-        $form->setData($user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

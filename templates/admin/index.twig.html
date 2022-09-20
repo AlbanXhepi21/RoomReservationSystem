@@ -1,0 +1,191 @@
+{% extends "base_admin.html.twig" %}
+
+
+
+
+
+{% block nav %}
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Admin Homepage</a>
+
+        <div class="navbar-nav">
+            <div class="nav-item text-nowrap">
+                <a class="nav-link px-3" href="#">Sign out</a>
+            </div>
+        </div>
+    </header>
+
+    {{ parent() }}
+
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Dashboard</h1>
+
+
+        </div>
+
+
+        <div class="container-fluid">
+            <section>
+                <div class="row">
+                <div class="row">
+                    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between px-md-1">
+                                    <div class="align-self-center">
+                                        <i class="fas fa-pencil-alt text-info fa-3x"></i>
+                                    </div>
+                                    <div class="text-end">
+                                        <h3>278</h3>
+                                        <p class="mb-0">ROOMS</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between px-md-1">
+                                    <div class="align-self-center">
+                                        <i class="far fa-comment-alt text-warning fa-3x"></i>
+                                    </div>
+                                    <div class="text-end">
+                                        <h3>156</h3>
+                                        <p class="mb-0">BUILDINGS</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between px-md-1">
+                                    <div class="align-self-center">
+                                        <i class="fas fa-chart-line text-success fa-3x"></i>
+                                    </div>
+                                    <div class="text-end">
+                                        <h3>64.89 %</h3>
+                                        <p class="mb-0">REQUESTS</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between px-md-1">
+                                    <div class="align-self-center">
+                                        <i class="fas fa-map-marker-alt text-danger fa-3x"></i>
+                                    </div>
+                                    <div class="text-end">
+                                        <h3>423</h3>
+                                        <p class="mb-0">RESERVATIONS</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            <a href="{{ path('app_building_index') }}">BULDINGS </a></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            <a href="{{ path('app_room_index') }}">ROOMS</a></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            <a href="{{ path('app_room_index') }}"> REQUESTS</a></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            <a href="{{ path('app_room_index') }}">RESERVATIONS</a></div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        <a href="{{ path('app_user_index') }}">PERSONNEL</a></div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        <a href="{{ path('app_room_index') }}"> TIMETABLES </a></div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </section>
+        </div>
+
+
+    </main>
+{% endblock %}
+
+
+
