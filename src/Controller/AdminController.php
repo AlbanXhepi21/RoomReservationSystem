@@ -2,19 +2,23 @@
 
 namespace App\Controller;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
-use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use Symfony\Component\HttpFoundation\Response;
+use App\Repository\BuildingRepository;
+use App\Repository\RoomRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class AdminController extends AbstractDashboardController
+class AdminController extends BaseController
 {
     #[Route('/admin', name: 'admin')]
-    public function index(): Response
-    {
-         return $this->render('admin/index.twig.html');
+    public function index(BuildingRepository $buildingRepository, RoomRepository $roomRepository){
+
+        $buildings = $buildingRepository->findAll();
+        $rooms = $roomRepository->findAll();
+
+         return $this->render('admin/index.twig.html', [
+             'buildings'=> $buildings,
+             'rooms' => $rooms
+         ]);
     }
 
 
