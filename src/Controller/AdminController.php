@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Reservation;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,7 +40,8 @@ class AdminController extends AbstractDashboardController
 
         ]);
 
-         return $this->render('admin/index.twig.html');
+
+
 
     }
 

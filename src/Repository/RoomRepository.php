@@ -41,20 +41,22 @@ class RoomRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Room[] Returns an array of Room objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        /**
+         * @return Room[] Returns an array of Room objects
+         */
+        public function findByCapacityBuilding($capacity): array
+        {
+            $entityManager = $this->getEntityManager();
+
+            $query = $entityManager->createQuery(
+                'SELECT r
+            FROM App\Entity\Room r
+            WHERE r.capacity >= :capacity'
+            )->setParameter('capacity', $capacity);
+
+            // returns an array of Rooms objects
+            return $query->getResult();
+        }
 
 
 }

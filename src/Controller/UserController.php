@@ -6,14 +6,15 @@ use App\Entity\Building;
 use App\Entity\Reservation;
 use App\Entity\Room;
 use App\Entity\User;
+use App\Form\AskForReservationType;
 use App\Form\UserRegistrationFormType;
+use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use function Symfony\Component\String\u;
+
 
 #[Route('/user')]
 class UserController extends BaseController
@@ -27,6 +28,7 @@ class UserController extends BaseController
         ]);
     }
 
+
     #[Route('/show', name: 'app_users_show', methods: ['GET'])]
     public function show(UserRepository $userRepository): Response
     {
@@ -34,6 +36,7 @@ class UserController extends BaseController
             'users' => $userRepository->findAll(),
         ]);
     }
+
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, UserRepository $userRepository): Response
@@ -53,6 +56,23 @@ class UserController extends BaseController
             'form' => $form,
         ]);
     }
+
+    #[Route('/ask', name: "app_reservation_ask")]
+    public function ask(Request $request){
+
+        $form = $this->createForm(AskForReservationType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('app_room_index', [
+                'request' => $request
+            ], 307);
+        }
+
+        return $this->renderForm('user/ask_form.html.twig', [
+            'askForm' => $form
+        ]);
+    }
+
 
     #[Route('/book')]
     public function book(EntityManagerInterface $entityManager):Response
