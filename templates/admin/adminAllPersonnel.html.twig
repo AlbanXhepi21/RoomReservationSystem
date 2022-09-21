@@ -1,0 +1,41 @@
+{% extends "base.html.twig" %}
+
+
+{% block nav %} {{ parent() }}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+<h1>All Personnel</h1>
+    <table class="table">
+        <caption>List of rooms</caption>
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Email</th>
+            <th scope="col">Birthday</th>
+            <th scope="col"> </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for personel in personnel %}
+        <tr>
+            <th scope="row">{{ personel.id }}</th>
+            <td>{{ personel.name }}</td>
+            <td>{{ personel.surname }}</td>
+            <td>{{ personel.email }}</td>
+            <td>{{  personel.birthday|date('d/m/Y') }}</td>
+            <td><button onclick="location.href='/admin/personnel/{{ personel.id }}'" type="button" class="btn btn-info">More Info</button></td>
+
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+
+
+
+
+</main>
+{% endblock %}
+
