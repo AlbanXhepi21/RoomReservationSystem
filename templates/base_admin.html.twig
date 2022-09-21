@@ -41,13 +41,18 @@
     <link href="dashboard.css" rel="stylesheet">
 </head>
 <body>
+
+
+
+
 {% block nav %}
+
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Admin Homepage</a>
 
     <div class="navbar-nav">
         <div class="nav-item text-nowrap">
-            <a class="nav-link px-3" href="#">Sign out</a>
+            <a class="nav-link px-3" href="{{ path("app_logout") }}">Sign out</a>
         </div>
     </div>
 </header>
@@ -58,39 +63,45 @@
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/user/">
+                        <a class="nav-link active" aria-current="page" href="/admin/">
                             <span data-feather="home"></span>
                             Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/user/book">
+                        <a class="nav-link" href="/admin/rooms/">
                             <span data-feather="file"></span>
-                            Book
+                            Rooms
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/user/states/">
+                        <a class="nav-link" href="/admin/personnel/">
                             <span data-feather="shopping-cart"></span>
-                            State
+                            Personnel
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/requests">
+                            <span data-feather="file"></span>
+                            Requests
+                        </a>
+                    </li>
 
                 </ul>
             </div>
         </nav>
 
+            {% block main %}
+
+            {% endblock %}
 
 
+    </div>
+</div>
 
+{% endblock %}
 
-
-        {% endblock %}
-
-        {% block body %}
-
-        {% endblock %}
 
 </body>
 </html>
