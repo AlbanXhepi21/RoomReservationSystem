@@ -17,7 +17,6 @@ class AskForReservationType extends AbstractType
     {
         $this->buildingRepository = $buildingRepository;
     }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -34,10 +33,10 @@ class AskForReservationType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Room::class,
-        ]);
-    }
+//    public function configureOptions(OptionsResolver $resolver): void
+//    {
+//        $resolver->setDefaults([
+//            'data_class' => null,
+//        ]);
+//    }
 }

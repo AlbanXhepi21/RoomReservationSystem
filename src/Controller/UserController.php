@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 #[Route('/user')]
 class UserController extends BaseController
 {
@@ -36,6 +37,7 @@ class UserController extends BaseController
         ]);
     }
 
+
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, UserRepository $userRepository): Response
     {
@@ -56,21 +58,21 @@ class UserController extends BaseController
     }
 
     #[Route('/ask', name: "app_reservation_ask")]
-    public function askReservation(Request $request, RoomRepository $roomRepository){
+    public function ask(Request $request){
 
         $form = $this->createForm(AskForReservationType::class);
         $form->handleRequest($request);
-        $ask_data = $form->getData();
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-            return $this->redirectToRoute('app_room_index', ['ask'=>$ask_data], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_room_index', [
+                'request' => $request
+            ], 307);
         }
 
         return $this->renderForm('user/ask_form.html.twig', [
             'askForm' => $form
         ]);
     }
+
 
     #[Route('/book')]
     public function book(EntityManagerInterface $entityManager):Response

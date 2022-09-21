@@ -14,10 +14,14 @@ class RoomController extends BaseController
 {
 
 
-    #[Route('/room/', name: 'app_room_index')]
-    public function index(RoomRepository $roomRepository): Response
+    #[Route('/room/', name: 'app_room_index', methods: ['GET','POST'])]
+    public function index(Request $request, RoomRepository $roomRepository): Response
     {
-        $rooms = $roomRepository->findAll();
+            $askedRecord = $request->get('ask_for_reservation');
+            $askedCapacity =$askedRecord['capacity'];
+            $askedBuilding =$askedRecord['building'];
+            $rooms = $roomRepository->findByCapacityBuilding($askedCapacity);
+
         return $this->render('room/index.html.twig',
             ['rooms' => $rooms]);
     }
