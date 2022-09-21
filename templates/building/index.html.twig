@@ -1,37 +1,55 @@
-{% extends 'base.html.twig' %}
+{% extends "baseUser.html.twig" %}
 
-{% block title %}Building index{% endblock %}
 
-{% block body %}
-    <h1>Building index</h1>
+{% block nav %} {{ parent() }}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Address</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for building in buildings %}
-            <tr>
-                <td>{{ building.id }}</td>
-                <td>{{ building.name }}</td>
-                <td>{{ building.address }}</td>
-                <td>
-                    <a href="{{ path('app_building_show', {'id': building.id}) }}">show</a>
-                    <a href="{{ path('app_building_delete', {'id': building.id}) }}">Delete</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_building_new') }}">Create new</a>
+
+        <h1 class="h2">Buildings</h1>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+
+            <table class="table">
+                <caption>Building list</caption>
+                <thead>
+                <tr>
+                    <th>Building Id</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th> Rooms<th>
+
+                    <th colspan="3" >Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for building in buildings %}
+                    <tr>
+                        <td>{{ building.id }}</td>
+                        <td>{{ building.name }}</td>
+                        <td>{{ building.address }}</td>
+                        <td>{{ building.rooms|length }}</td>
+                        <td>{{ building.admin.firstName }}  {{ building.admin.lastName }}</td>
+                        <td>
+                            <button onclick="location.href='{{ path('app_building_show', {'id': building.id}) }}'" type="button" class="btn btn-success ml-1">Show</button>
+                        </td>
+                        <td>
+                            <button onclick="location.href='{{ path('app_building_edit', {'id': building.id}) }}'" type="button" class="btn btn-warning ml-1">Edit</button>
+                        </td>
+                        <td>
+                            {{ include('building/_delete_form.html.twig') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+
+                </tbody>
+            </table>
+
+        </div>
+        <button onclick="location.href='{{ path('app_building_new') }}'" class="btn btn-success ml-1">+ Create new</button>
+
+    </main>
 {% endblock %}
+
+
+

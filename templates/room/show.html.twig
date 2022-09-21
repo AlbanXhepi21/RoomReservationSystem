@@ -1,8 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_admin.html.twig' %}
 
-{% block title %}Room{% endblock %}
+{% block title %}Building{% endblock %}
 
-{% block body %}
+{% block nav %} {{ parent() }}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
     <h1>Room</h1>
 
     <table class="table">
@@ -27,9 +29,8 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_room_index') }}">back to list</a>
+    <button onclick="location.href='{{ path('app_room_index') }}'" type="button" class="btn btn-success ml-1">Back</button>
+    <button onclick="location.href='{{ path("app_room_index", {'id': room.id}) }}'" type="button" class="btn btn-success ml-1">View Reservations</button>
 
-    <a href="{{ path('app_room_edit', {'id': room.id}) }}">edit</a>
 
-    {{ include('room/_delete_form.html.twig') }}
 {% endblock %}
