@@ -43,15 +43,13 @@ class SecurityController extends AbstractController
     }
 
 
-     #[Route("/register", "app_register")]
+     #[Route("/register", "app_register", methods: ['GET', 'POST'])]
 
     public function register(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher,
                              LoginFormAuthenticator $formAuthenticator,Security $security){
 
         $form = $this->createForm( UserRegistrationFormType::class);
-        if(!$this->isGranted('ROLE_ADMIN')){
-            $form->remove('roleAdmin');
-        }
+        $form->remove('Roles');
         $form->handleRequest($request);
 
 
@@ -67,13 +65,6 @@ class SecurityController extends AbstractController
                 $user->agreeTerms();
             }
 
-            if (true === $form['roleAdmin']->getData()) {
-                $roles[] = 'ROLE_ADMIN';
-                $user->setRoles(array_unique($roles));
-            }
-            else{
-                $user->setRoles();
-            }
 
 
             $em->persist($user);

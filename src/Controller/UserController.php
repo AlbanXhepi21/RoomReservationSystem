@@ -11,8 +11,11 @@ use App\Form\UserRegistrationFormType;
 use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -39,13 +42,18 @@ class UserController extends BaseController
 
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, UserRepository $userRepository): Response
+    public function new(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
-        $form = $this->createForm(UserRegistrationFormType::class, $user);
+        $form = $this->createForm(UserRegistrationFormType::class, $user)->addTra;
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($passwordHasher->hashPassword($user,$form['plainPassword']->getData()));
+            if (true === $form['agreeTerms']->getData()) {
+                $user->agreeTerms();
+            }
+
             $userRepository->add($user, true);
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
@@ -74,7 +82,7 @@ class UserController extends BaseController
     }
 
 
-    #[Route('/book')]
+    #[Route('/book', name: 'app_book_user')]
     public function book(EntityManagerInterface $entityManager):Response
     {
         $building= $entityManager->getRepository(Building::class);
@@ -189,45 +197,6 @@ class UserController extends BaseController
 
     }
 
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function view(int $id, Request $request, UserRepository $userRepository): Response
-    {
-        $user = $userRepository->findOneBy(['id'=>$id]);
-        return $this->render('user/show.html.twig', [
-            'user' => $user,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
-    public function edit(int $id, Request $request, UserRepository $userRepository): Response
-    {
-        $user = $userRepository->findOneBy(['id'=>$id]);
-        $form = $this->createForm(UserRegistrationFormType::class);
-        if(!in_array("ROLE_ADMIN",$user->getRoles())) $form->remove('roleAdmin');
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->add($user, true);
-
-            return $this->redirectToRoute('app_user_index',[], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('security/register.html.twig', [
-            'user' => $user,
-            'registrationForm' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'], requirements: ['id' => '\d+'] )]
-    public function delete(int $id, Request $request, UserRepository $userRepository): Response
-    {
-        $user = $userRepository->findOneBy(['id'=>$id]);
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $userRepository->remove($user, true);
-        }
-
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-    }
 
     /**
      * @param $status array|Reservation[]

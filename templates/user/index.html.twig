@@ -1,21 +1,21 @@
-{% extends 'base.html.twig' %}
+{% extends "base_admin.html.twig" %}
+{% block title %}Room index{% endblock %}
 
-{% block title %}User index{% endblock %}
-
-{% block body %}
-    <h1>User index</h1>
-
-    <table class="table">
-        <thead>
+{% block nav %} {{ parent() }}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <h1 class="h2">Users</h1>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <table class="table">
+            <caption>Users list</caption>
+            <thead>
             <tr>
                 <th>Id</th>
                 <th>Email</th>
                 <th>Roles</th>
-                <th>Password</th>
                 <th>FirstName</th>
                 <th>LastName</th>
                 <th>AgreedTermsAt</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,22 +24,25 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.agreedTermsAt|date('Y-m-d') }}</td>
                 <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+                    <button onclick="location.href='{{ path('app_user_show', {'id': user.id}) }}'" type="button" class="btn btn-success ml-1">Show</button>
                 </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
+                <td>
+                    <button onclick="location.href='{{ path('app_user_edit', {'id': user.id}) }}'" type="button" class="btn btn-warning ml-1">Edit</button>
+                </td>
+                <td>
+                {{ include('user/_delete_form.html.twig') }}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_new') }}">Create new</a>
+    </div>
+    <button onclick="location.href='{{ path('app_room_new') }}'" class="btn btn-success ml-1">+ Create new</button>
+
+</main>
 {% endblock %}
