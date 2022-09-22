@@ -32,17 +32,88 @@ class AdminController extends AbstractDashboardController
         $reservations= $entityManager->getRepository(Reservation::class);
         $requests = $reservations->findBy(['reservationStatus'=>'pending']);
 
+        $requestedReservations=[];
+        $approvedReservations = [];
+        /** @var Reservation $request */
+        foreach($requests as $key=>$request)
+            {
+                $reserved = $reservations->findBy(['reservationStatus'=>'approved', 'date'=>$request->getDate(),'room'=>$request->getRoom()]);
+
+               $approvedReservations[$key]=$this->getUpdatedStatus($reserved);
+
+            }
+
+        foreach($requests as $key=>$request)
+        {
+            $requestedReservations[$key]=$this->merge($approvedReservations[$key],$requests);
+        }
+
+
+
+
+
+
+
 
 
         return $this->render('admin/requests.html.twig', [
             'reservations'=> $reservations,
-            'requests'=>$requests
+            'requests'=>$requests,
+            'requestedReservations' =>  $requestedReservations
 
         ]);
 
 
 
 
+    }
+
+    public function getUpdatedStatus(array $reservations): array
+    {
+        $result=[1,1,1,1,1,1,1];
+        /** @var Reservation $reservation */
+        foreach($reservations as $reservation)
+        {
+            $status=$reservation->getStatus();
+            foreach($status as $key=>$value)
+            {
+                if($result[$key]!= $value && $result[$key]==1)
+                {
+
+                    $result[$key]=$value;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public function merge(array $reservations, array $requests): array
+    {
+        $result=[1,1,1,1,1,1,1];
+        /** @var Reservation $reservation */
+        foreach($requests as $i=>$request)
+        {
+            $status=$request->getStatus();
+            foreach($status as $key=>$value)
+            {
+
+               if(($reservations[$key]===0  && $value===1 )  )
+                {
+                    $result[$key]=3;
+
+                }
+
+                elseif($reservations[$key]===1  && $value===0)
+                {
+                    $result[$key]=0;
+                }
+
+
+            }
+        }
+
+        return $result;
     }
 
 
