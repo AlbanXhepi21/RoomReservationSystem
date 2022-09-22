@@ -120,7 +120,7 @@
                     {
 
                         e.target.classList.toggle("Selected");
-                        if(e.target.innerHTML==='Selected')
+                        if(e.target.classList.contains('Selected'))
                         {
                             e.target.innerHTML='Select';
 
@@ -149,10 +149,6 @@
                             }
 
                         }
-
-
-
-
                          document.getElementById("status_array").value=status;
                     })
 

@@ -1,12 +1,11 @@
 {% extends "base_admin.html.twig" %}
 
 
-{% block main %}
+{% block body %}
     <style>
         body {
             margin: 0 auto;
             padding: 0px;
-
             width: 100%;
 
         }
@@ -29,8 +28,6 @@
         }
 
         #table_detail {
-
-
             border-collapse: collapse;
             color: #2E2E2E;
             border: #A4A4A4;
@@ -60,16 +57,15 @@
                 <th scope="col">Room Name</th>
                 <th scope="col">Room Capacity</th>
                 <th scope="col">Date</th>
-
-
-
                 <th scope="col"></th>
-
+           </tr>
             </thead>
             <tbody>
 
 
             {% for key,request in requests  %}
+
+
                 {%set key=key+1 %}
                 <tr onclick="showHideRow('hidden_row{{ key }}');">
 
@@ -84,88 +80,45 @@
                 </tr>
 
                 <tr id="hidden_row{{ key }}" class="hidden_row">
-                    <td colspan=6>
+                    <td colspan=7>
                         <br> <br>
-                        <div>
-                            <table id="time" class="table table-bordered table-white">
-                                <thead>
-                                <tr>
-                                    <th scope="col" >9:00 -10:00 </th>
-                                    <th scope="col">10:00 - 11:00</th>
-                                    <th scope="col">11:00 - 12:00</th>
-                                    <th scope="col">12:00 - 1:00</th>
-                                    <th scope="col">1:00 - 2:00</th>
-                                    <th scope="col">2:00 - 3:00</th>
-                                    <th scope="col">3:00 - 4:00 </th>
+                <div>
+                    <table id="time" class="table table-bordered table-white">
+                        <thead>
+                        <tr>
+                            <th scope="col" >9:00 -10:00 </th>
+                            <th scope="col">10:00 - 11:00</th>
+                            <th scope="col">11:00 - 12:00</th>
+                            <th scope="col">12:00 - 1:00</th>
+                            <th scope="col">1:00 - 2:00</th>
+                            <th scope="col">2:00 - 3:00</th>
+                            <th scope="col">3:00 - 4:00 </th>
 
-                                </tr>
-                                </thead>
-                                <tbody>
-
-
+                        </tr>
+                        </thead>
+                        <tbody>
                                 {%set i=0 %}
                                 <tr>
 
-                                    {% for slot in request.status %}
+                                    {% for slot in requestedReservations[key-1] %}
                                         {% set i=i+1 %}
                                         {% if slot == 1 %}
-
-                                            <td id="{{ i }}"  class=" table-primary time-slot">Not Selected</td>
-
-
+                                            <td id="{{ i }}"  class=" table-primary time-slot"> </td>
                                         {% elseif slot == 0 %}
-
-                                            <td {{ i}} class="table-success">Selected</td>
-
+                                            <td {{ i}} class="table-success">Pending</td>
+                                        {% elseif slot == 3 %}
+                                            <td id="{{ i }}"  class=" table-danger time-slot">Reserved</td>
                                         {% endif %}
 
 
                                     {% endfor %}
                                 </tr>
-                                </tbody>
+                        </tbody>
 
-                            </table>
+                    </table>
 
-                            <br>
+                    <br>
 
-                            <table id="time" class="table table-bordered table-white">
-                                <thead>
-                                <tr>
-                                    <th scope="col" >9:00 -10:00 </th>
-                                    <th scope="col">10:00 - 11:00</th>
-                                    <th scope="col">11:00 - 12:00</th>
-                                    <th scope="col">12:00 - 1:00</th>
-                                    <th scope="col">1:00 - 2:00</th>
-                                    <th scope="col">2:00 - 3:00</th>
-                                    <th scope="col">3:00 - 4:00 </th>
-
-                                </tr>
-                                </thead>
-                                <tbody>
-
-
-                                {%set i=0 %}
-                                <tr>
-
-                                    {% for slot in request.status %}
-                                        {% set i=i+1 %}
-                                        {% if slot == 1 %}
-
-                                            <td id="{{ i }}"  class=" table-primary time-slot">Not Selected</td>
-
-
-                                        {% elseif slot == 0 %}
-
-                                            <td {{ i}} class="table-success">Selected</td>
-
-                                        {% endif %}
-
-
-                                    {% endfor %}
-                                </tr>
-                                </tbody>
-
-                            </table>
                             <br>
 
 
@@ -190,17 +143,12 @@
 
         </div>
 
-            <script src=
-                    "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">
             </script>
-            <script src=
-                    "https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js">
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js">
             </script>
-            <link rel="stylesheet" href=
-            "https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
-            <link rel="stylesheet"
-                  type="text/css" href=
-                  "https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+            <link rel="stylesheet"type="text/css" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 
             <script type="text/javascript">
                 function showHideRow(row) {
