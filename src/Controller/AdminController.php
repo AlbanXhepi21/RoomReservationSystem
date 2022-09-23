@@ -149,8 +149,7 @@ class AdminController extends BaseController
     public function edit(int $id, Request $request, UserRepository $userRepository): Response
     {
         $user = $userRepository->findOneBy(['id'=>$id]);
-        $form = $this->createForm(UserRegistrationFormType::class);
-        if(!in_array("ROLE_ADMIN",$user->getRoles())) $form->remove('roleAdmin');
+        $form = $this->createForm(UserRegistrationFormType::class,$user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -159,9 +158,9 @@ class AdminController extends BaseController
             return $this->redirectToRoute('app_user_index',[], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('security/register.html.twig', [
+        return $this->renderForm('user/edit.html.twig', [
             'user' => $user,
-            'registrationForm' => $form,
+            'form' => $form,
         ]);
     }
 
