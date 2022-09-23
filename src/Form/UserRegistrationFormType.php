@@ -52,8 +52,23 @@ class UserRegistrationFormType extends AbstractType
                     ]
                 ]);
 
+        // Data transformer
+        $builder->get('Roles')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($rolesArray) {
+                    // transform the array to a string
+                    return !empty($rolesArray)? $rolesArray[0]: null;
+                },
+                function ($rolesString) {
+                    // transform the string back to an array
+                    return [$rolesString];
+                }
+            ));
 
-         function configureOptions(OptionsResolver $resolver): void
+
+
+
+    function configureOptions(OptionsResolver $resolver): void
         {
             $resolver->setDefaults([
                 'data_class' => User::class,

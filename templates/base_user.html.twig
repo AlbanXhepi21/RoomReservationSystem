@@ -14,6 +14,8 @@
         {% endblock %}
     </head>
     <body>
+
+
     {% block nav %}
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color: black;">
         <div class="container">
@@ -69,7 +71,37 @@
             </div>
             </div>
         </div>
-    </nav>{% endblock %}
+    </nav>
+                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" style="margin-top: 50px; background-color: #9fa9b7; height: ">
+                    <div class="position-sticky pt-3">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/user/">
+                                    <span data-feather="home"></span>
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path("app_reservation_ask") }}">
+                                    <span data-feather="file"></span>
+                                    Book
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/user/states/">
+                                    <span data-feather="shopping-cart"></span>
+                                    State
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                </nav>
+      {% endblock %}
+
         {% block body %}{% endblock %}
+
+
     </body>
 </html>

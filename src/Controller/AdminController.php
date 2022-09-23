@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Reservation;
+use App\Entity\User;
 use App\Form\UserRegistrationFormType;
 use App\Repository\BuildingRepository;
 use App\Repository\RoomRepository;
@@ -16,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -125,22 +127,20 @@ class AdminController extends BaseController
     }
 
 
-    /**
-     * @Route("/admin/login", name="app_admin_login")
-     */
-    public function view(AuthenticationUtils $authenticationUtils){
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-        return $this->render("security/login.html.twig", ['last_username' => $lastUsername, 'error' => $error]);
-    }
-
     #[Route('/user/{id}', name: 'app_user_show', methods: ['GET'], requirements: ['id' => '\d+']), IsGranted('ROLE_ADMIN')]
     public function show(int $id, Request $request, UserRepository $userRepository): Response
     {
         $user = $userRepository->findOneBy(['id'=>$id]);
         return $this->render('user/show.html.twig', [
             'user' => $user,
+        ]);
+    }
+
+    #[Route('/user/', name: 'app_users_show', methods: ['GET'])]
+    public function view(UserRepository $userRepository): Response
+    {
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findAll(),
         ]);
     }
 
@@ -174,6 +174,30 @@ class AdminController extends BaseController
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/user/new', name: 'app_user_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        $user = new User();
+        $form = $this->createForm(UserRegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($passwordHasher->hashPassword($user,$form['plainPassword']->getData()));
+            if (true === $form['agreeTerms']->getData()) {
+                $user->agreeTerms();
+            }
+
+            $userRepository->add($user, true);
+
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('user/new.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
     }
 
 }

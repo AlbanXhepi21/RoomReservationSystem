@@ -48,8 +48,7 @@ class SecurityController extends AbstractController
     public function register(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher,
                              LoginFormAuthenticator $formAuthenticator,Security $security){
 
-        $form = $this->createForm( UserRegistrationFormType::class);
-        $form->remove('Roles');
+        $form = $this->createForm( UserRegistrationFormType::class)->remove('Roles');
         $form->handleRequest($request);
 
 
