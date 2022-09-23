@@ -17,8 +17,16 @@
                 <td>{{ user.email }}</td>
             </tr>
             <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <th>Role</th>
+                <td>
+                {% for role in user.roles|slice(0,1) %}
+                    {% if role=="ROLE_USER" %}
+                      <span>User</span>
+                    {% else %}
+                        <span>Admin</span>
+                    {% endif %}
+                {% endfor %}
+                </td>
             </tr>
             <tr>
                 <th>Password</th>

@@ -11,7 +11,7 @@
             <tr>
                 <th>Id</th>
                 <th>Email</th>
-                <th>Roles</th>
+                <th>Role</th>
                 <th>FirstName</th>
                 <th>LastName</th>
                 <th>AgreedTermsAt</th>
@@ -23,7 +23,14 @@
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>
+                    {% for role in user.roles|slice(0,1) %}
+                        {% if role=="ROLE_USER" %}
+                            <span>User</span>
+                        {% else %}
+                            <span>Admin</span>
+                        {% endif %}
+                    {% endfor %}
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.agreedTermsAt|date('Y-m-d') }}</td>
