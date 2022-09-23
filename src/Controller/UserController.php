@@ -45,7 +45,7 @@ class UserController extends BaseController
     public function new(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
-        $form = $this->createForm(UserRegistrationFormType::class, $user)->addTra;
+        $form = $this->createForm(UserRegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -71,7 +71,7 @@ class UserController extends BaseController
         $form = $this->createForm(AskForReservationType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('app_room_index', [
+            return $this->redirectToRoute('app_book_ask', [
                 'request' => $request
             ], 307);
         }
@@ -79,6 +79,18 @@ class UserController extends BaseController
         return $this->renderForm('user/ask_form.html.twig', [
             'askForm' => $form
         ]);
+    }
+
+    #[Route('/book/ask', name:'app_book_ask', methods: ['GET','POST'])]
+    public function resultOfForm(Request $request, RoomRepository $roomRepository):Response
+    {
+        $askedRecord = $request->get('ask_for_reservation');
+        $askedCapacity = $askedRecord['capacity'];
+        $askedBuilding = $askedRecord['building'];
+        $rooms = $roomRepository->findByCapacityBuilding($askedCapacity, $askedBuilding);
+        return $this->render('user/rooms.html.twig',
+            ['rooms' => $rooms]);
+
     }
 
 
