@@ -45,8 +45,9 @@ class AdminController extends AbstractDashboardController
 
         foreach($requests as $key=>$request)
         {
-            $requestedReservations[$key]=$this->merge($approvedReservations[$key],$requests);
+            $requestedReservations[$key]=$this->merge($approvedReservations[$key],$request->getStatus());
         }
+
 
 
 
@@ -92,10 +93,9 @@ class AdminController extends AbstractDashboardController
     {
         $result=[1,1,1,1,1,1,1];
         /** @var Reservation $reservation */
-        foreach($requests as $i=>$request)
-        {
-            $status=$request->getStatus();
-            foreach($status as $key=>$value)
+
+
+            foreach($requests as $key=>$value)
             {
 
                if(($reservations[$key]===0  && $value===1 )  )
@@ -111,7 +111,7 @@ class AdminController extends AbstractDashboardController
 
 
             }
-        }
+
 
         return $result;
     }
