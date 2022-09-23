@@ -3,9 +3,24 @@
 {% block title %}New User{% endblock %}
 
 {% block body %}
-    <h1>Create new User</h1>
 
-    {{ include('user/_form.html.twig') }}
+<section class="vh-200" style="background-color: #89c3d2;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <h3 style="text-align: center; color: #005cc5;"> NEW USER</h3>
+                    <div class="card-body p-10">
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+                          {{ include('user/_form.html.twig') }}
+
+                          <a href="{{ path('app_user_index') }}">back to list</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

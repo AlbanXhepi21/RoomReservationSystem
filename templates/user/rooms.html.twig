@@ -24,8 +24,7 @@
                 <td>{{ room.name }}</td>
                 <td>{{ room.capacity }}</td>
 
-
-                <td><button onclick="location.href='{{ room.building.name }}/{{ room.id }}'" type="button" class="btn btn-success">Select</button></td>
+                <td><button onclick="location.href='/user/book/{{ room.building.name }}/{{ room.id }}'" type="button" class="btn btn-success">Select</button></td>
 
             </tr>
 

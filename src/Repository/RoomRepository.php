@@ -44,15 +44,15 @@ class RoomRepository extends ServiceEntityRepository
         /**
          * @return Room[] Returns an array of Room objects
          */
-        public function findByCapacityBuilding($capacity): array
+        public function findByCapacityBuilding($capacity, $building_id): array
         {
             $entityManager = $this->getEntityManager();
 
             $query = $entityManager->createQuery(
-                'SELECT r
+                dql: 'SELECT r
             FROM App\Entity\Room r
-            WHERE r.capacity >= :capacity'
-            )->setParameter('capacity', $capacity);
+            WHERE r.capacity >= :capacity AND r.building = :building_id'
+            )->setParameter('capacity', $capacity)->setParameter('building_id',$building_id);
 
             // returns an array of Rooms objects
             return $query->getResult();
