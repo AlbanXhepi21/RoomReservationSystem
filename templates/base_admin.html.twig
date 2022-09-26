@@ -96,22 +96,22 @@
                             class="list-group-item list-group-item-action py-2 ripple"
                             aria-current="true"
                     >
-                        <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
+                        <span>Main dashboard</span>
                     </a>
                     <a href="{{ path("app_room_index") }}" class="list-group-item list-group-item-action py-2 ripple">
-                        <i class="fas fa-chart-area fa-fw me-3"></i><span>Rooms</span>
+                        </i><span>Rooms</span>
                     </a>
                     <a href="{{ path("app_users_show") }}" class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-lock fa-fw me-3"></i><span>Personnel</span></a
+                    ><span>Personnel</span></a
                     >
                     <a href="{{ path("app_building_index") }}" class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-chart-line fa-fw me-3"></i><span>Building</span></a
+                    ><span>Building</span></a
                     >
-                    <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-                        <i class="fas fa-chart-pie fa-fw me-3"></i><span>Requests</span>
+                    <a href="{{ path('app_admin_requests') }}" class="list-group-item list-group-item-action py-2 ripple">
+                        <span>Requests</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-chart-bar fa-fw me-3"></i><span>Reservations</span></a
+                    <a href="{{ path('app_users_reservations') }}" class="list-group-item list-group-item-action py-2 ripple"
+                    ><span>Reservations</span></a
                     >
                 </div>
             </div>
@@ -136,7 +136,7 @@
                 </button>
 
                 <!-- Brand -->
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="{{ path("app_admin_dashboard") }}">
                     <img
                             src="https://cdn-icons-png.flaticon.com/512/1105/1105914.png"
                             height="50"

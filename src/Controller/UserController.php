@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\AskForReservationType;
 use App\Form\UserRegistrationFormType;
 use App\Repository\BuildingRepository;
+use App\Repository\ReservationRepository;
 use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +21,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 
+/**
+ * @method merge(mixed $key, array $getStatus)
+ */
 #[Route('/user')]
 class UserController extends BaseController
 {
@@ -174,19 +178,6 @@ class UserController extends BaseController
 
     }
 
-
-
-    #[Route('/states')]
-    public function userState( ):Response
-    {
-
-        $title = 'Personnel States Page, All States';
-
-        return $this->render('user/userAllStates.html.twig', [
-            'state' => $title
-        ]);
-
-    }
 
 
     /**

@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 
+use App\Entity\Building;
 use App\Entity\Reservation;
+use App\Entity\Room;
 use App\Entity\User;
 use App\Form\UserRegistrationFormType;
 use App\Repository\BuildingRepository;
@@ -26,19 +28,22 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class AdminController extends BaseController
 {
     #[Route('/', name: 'app_admin_dashboard')]
-    public function index(BuildingRepository $buildingRepository, RoomRepository $roomRepository){
+    public function index(EntityManagerInterface $entityManager){
 
-        $buildings = $buildingRepository->findAll();
-        $rooms = $roomRepository->findAll();
-
+        $buildings = $entityManager->getRepository(Building::class)->findAll();
+        $rooms = $entityManager->getRepository(Room::class)->findAll();
+        $requests = $entityManager->getRepository(Reservation::class)->findBy(['reservationStatus'=>'approved']);
+        $reservations = $entityManager->getRepository(Reservation::class)->findAll();
         return $this->render('/admin/index.html.twig', [
             'buildings'=> $buildings,
-            'rooms' => $rooms
+            'rooms' => $rooms,
+            'reservations'=> $reservations,
+            'requests' => $requests
         ]);
     }
 
 
-    #[Route('/requests', name: 'admin_requests')]
+    #[Route('/requests', name: 'app_admin_requests')]
     public function requests( EntityManagerInterface $entityManager): Response
     {
 
@@ -134,6 +139,22 @@ class AdminController extends BaseController
         $reservation->setReservationStatus('approved');
         $reservationRepository->add($reservation,true);
         return $this->redirectToRoute('admin_requests',[], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/reservations', name: 'app_users_reservations')]
+    public function userState(ReservationRepository $reservationRepository):Response
+    {
+        $reservations = $reservationRepository->findBy(['reservationStatus'=>'approved']);
+        $approvedTimes = [];
+        foreach($reservations as $key=>$reservation){
+            $approvedTimes[$key] = $reservation->getStatus();
+        }
+
+        return $this->render('user/userAllStates.html.twig', [
+            'requests'=>$reservations,
+            'acceptedReservations'=>$approvedTimes,
+        ]);
+
     }
 
     #[Route('/user/{id}', name: 'app_user_show', methods: ['GET'], requirements: ['id' => '\d+']), IsGranted('ROLE_ADMIN')]
