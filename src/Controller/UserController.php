@@ -21,9 +21,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-/**
- * @method merge(mixed $key, array $getStatus)
- */
+
 #[Route('/user')]
 class UserController extends BaseController
 {
@@ -102,6 +100,33 @@ class UserController extends BaseController
             'rooms' => $rooms
         ]);
 
+    }
+
+    public function merge(array $reservations, array $requests): array
+    {
+        $result=[1,1,1,1,1,1,1];
+        /** @var Reservation $reservation */
+
+
+        foreach($requests as $key=>$value)
+        {
+
+            if(($reservations[$key]===0  && $value===1 )  )
+            {
+                $result[$key]=3;
+
+            }
+
+            elseif($reservations[$key]===1  && $value===0)
+            {
+                $result[$key]=0;
+            }
+
+
+        }
+
+
+        return $result;
     }
 
     #[Route('/book/{slug}/{room}' , name: 'single_room')]
@@ -202,6 +227,36 @@ class UserController extends BaseController
        }
 
         return $result;
+    }
+
+    #[Route('/request/{id}', name: 'app_user_request', methods: ['GET'], requirements: ['id' => '\d+']) ]
+    public function getRequest(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $reservations= $entityManager->getRepository(Reservation::class);
+        $requests = $reservations->findBy(['user'=>$id,'reservationStatus'=>'pending']);
+
+        $requestedReservations=[];
+        $approvedReservations = [];
+        /** @var Reservation $request */
+        foreach($requests as $key=>$request)
+        {
+            $reserved = $reservations->findBy(['reservationStatus'=>'approved', 'date'=>$request->getDate(),'room'=>$request->getRoom()]);
+
+            $approvedReservations[$key]=$this->getUpdatedStatus($reserved);
+
+        }
+
+        foreach($requests as $key=>$request)
+        {
+            $requestedReservations[$key]=$this->merge($approvedReservations[$key],$request->getStatus());
+        }
+
+        return $this->render('user/request.html.twig', [
+            'reservations'=> $reservations,
+            'requests'=>$requests,
+            'requestedReservations' =>  $requestedReservations
+
+        ]);
     }
 
 }

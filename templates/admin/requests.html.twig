@@ -1,5 +1,4 @@
-{% extends "base_admin.html.twig" %}
-
+{% extends 'base_admin.html.twig' %}
 
 {% block body %}
     <style>
@@ -121,8 +120,9 @@
 
                             <br>
 
-
+                    {% if is_granted("ROLE_ADMIN") %}
                      <button type="button" class="btn btn-danger" onclick="location.href='/admin/request/decline/{{request.id }}', {'id': request.id}">Decline</button>      <button type="button" class="btn btn-success" onclick="location.href='/admin/request/approve/{{request.id }}', {'id': request.id}" >Accept</button>
+                    {% endif %}
                         </div>
 
                     </td>
