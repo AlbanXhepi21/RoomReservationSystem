@@ -13,8 +13,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoomController extends BaseController
 {
 
+    #[Route('/', name: 'app_homepage')]
+    public function homepage(): Response
+    {
 
-    #[Route('/room/', name: 'app_room_index')]
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_admin_dashboard');
+        }
+        elseif($this->isGranted('ROLE_USER')){
+            return $this->redirectToRoute('app_user_index');
+        }
+            return $this->redirectToRoute('app_login');
+    }
+
+        #[Route('/room/', name: 'app_room_index')]
     public function index(Request $request, RoomRepository $roomRepository): Response
     {
 
@@ -85,11 +97,6 @@ class RoomController extends BaseController
         return $this->redirectToRoute('app_room_index', [], Response::HTTP_SEE_OTHER);
     }
 
-
-    #[Route('/', name: 'app_homepage')]
-    public function homepage(){
-        return $this->render('homepage.html.twig');
-    }
 
 
 
