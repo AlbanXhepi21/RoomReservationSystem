@@ -12,9 +12,9 @@
                     <div class="card text-black" style="border-radius: 25px;">
                         <div class="card-body p-md-5">
                             <div class="row justify-content-center">
+                                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"> Information </p>
                                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"> Information </p>
-
+                                    <h6>Before making reservation, you should enter the number of attendees</h6>
                                     {{ form_start(askForm, {'attr': {'class': 'mx-1 mx-md-4'}}, {'method': 'POST'})}}
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
@@ -34,7 +34,10 @@
 
                                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                             <button class="btn btn-primary btn-lg">Find results</button>
+
                                     </div>
+
+                                    <a href="{{ path('app_user_index') }}">Back</a>
 
                                     {{ form_end(askForm) }}
 

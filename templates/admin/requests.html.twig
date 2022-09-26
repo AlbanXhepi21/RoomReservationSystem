@@ -122,7 +122,7 @@
                             <br>
 
 
-                     <button type="button" class="btn btn-danger">Decline</button>      <button type="button" class="btn btn-success">Accept</button>
+                     <button type="button" class="btn btn-danger" onclick="location.href='/admin/request/decline/{{request.id }}', {'id': request.id}">Decline</button>      <button type="button" class="btn btn-success" onclick="location.href='/admin/request/approve/{{request.id }}', {'id': request.id}" >Accept</button>
                         </div>
 
                     </td>

@@ -8,6 +8,7 @@ use App\Entity\Room;
 use App\Entity\User;
 use App\Form\AskForReservationType;
 use App\Form\UserRegistrationFormType;
+use App\Repository\BuildingRepository;
 use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,12 +32,21 @@ class UserController extends BaseController
         ]);
     }
 
+    #[Route('/my_profile/{id}', name: 'app_user_profile', methods: ['GET'], requirements: ['id' => '\d+']) ]
+    public function getProfile(int $id, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->findOneBy(['id'=>$id]);
+        return $this->render('user/show.html.twig', [
+            'user' => $user,
+        ]);
+    }
 
 
-    #[Route('/ask', name: "app_reservation_ask")]
-    public function ask(Request $request){
 
-        $form = $this->createForm(AskForReservationType::class);
+
+    #[Route('/ask/', name: "app_reservation_ask",  methods: ['GET','POST'])]
+    public function ask(Request $request, BuildingRepository $buildingRepository){
+            $form = $this->createForm(AskForReservationType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirectToRoute('app_book_ask', [
@@ -49,15 +59,16 @@ class UserController extends BaseController
         ]);
     }
 
-    #[Route('/book/ask', name:'app_book_ask', methods: ['GET','POST'])]
-    public function resultOfForm(Request $request, RoomRepository $roomRepository):Response
+    #[Route('/book/ask/', name:'app_book_ask')]
+    public function resultOfForm( Request $request, RoomRepository $roomRepository):Response
     {
         $askedRecord = $request->get('ask_for_reservation');
         $askedCapacity = $askedRecord['capacity'];
         $askedBuilding = $askedRecord['building'];
         $rooms = $roomRepository->findByCapacityBuilding($askedCapacity, $askedBuilding);
         return $this->render('user/rooms.html.twig',
-            ['rooms' => $rooms]);
+            ['rooms' => $rooms,
+                'capacity'=>$askedCapacity]);
 
     }
 

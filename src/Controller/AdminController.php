@@ -7,6 +7,7 @@ use App\Entity\Reservation;
 use App\Entity\User;
 use App\Form\UserRegistrationFormType;
 use App\Repository\BuildingRepository;
+use App\Repository\ReservationRepository;
 use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -117,6 +118,23 @@ class AdminController extends BaseController
         return $result;
     }
 
+    #[Route('/request/decline/{id}', name: 'app_request_decline', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function decline(int $id, Request $request, ReservationRepository $reservationRepository): Response
+    {
+        $reservation = $reservationRepository->findOneBy(['id'=>$id]);
+        $reservation->setReservationStatus('declined');
+        $reservationRepository->add($reservation,true);
+        return $this->redirectToRoute('admin_requests',[], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/request/approve/{id}', name: 'app_request_approve', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function approve(int $id, Request $request, ReservationRepository $reservationRepository): Response
+    {
+        $reservation = $reservationRepository->findOneBy(['id'=>$id]);
+        $reservation->setReservationStatus('approved');
+        $reservationRepository->add($reservation,true);
+        return $this->redirectToRoute('admin_requests',[], Response::HTTP_SEE_OTHER);
+    }
 
     #[Route('/user/{id}', name: 'app_user_show', methods: ['GET'], requirements: ['id' => '\d+']), IsGranted('ROLE_ADMIN')]
     public function show(int $id, Request $request, UserRepository $userRepository): Response

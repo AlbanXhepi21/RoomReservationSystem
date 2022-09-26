@@ -24,8 +24,11 @@
                 <td>{{ room.name }}</td>
                 <td>{{ room.capacity }}</td>
 
+                {% if  capacity is defined and capacity <= room.capacity  %}
                 <td><button onclick="location.href='/user/book/{{ room.building.name }}/{{ room.id }}'" type="button" class="btn btn-success">Select</button></td>
-
+                {% else %}
+                    <td><button onclick="location.href='/book/ask/{{ room.building.id }}/{{ room.id }}'" type="button" class="btn btn-warning">Fill Form</button></td>
+                    {% endif %}
             </tr>
 
             {% endfor %}
