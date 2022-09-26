@@ -60,15 +60,6 @@ class AdminController extends BaseController
             $requestedReservations[$key]=$this->merge($approvedReservations[$key],$request->getStatus());
         }
 
-
-
-
-
-
-
-
-
-
         return $this->render('admin/requests.html.twig', [
             'reservations'=> $reservations,
             'requests'=>$requests,

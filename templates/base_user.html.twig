@@ -5,12 +5,16 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
         {% block stylesheets %}
+            <link href="css/styles.css" rel="stylesheet" />
             {{ encore_entry_link_tags('app') }}
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         {% endblock %}
 
         <style>
@@ -89,19 +93,23 @@
                         <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
                     </a>
                     <a href="{{ path("app_reservation_ask") }}" class="list-group-item list-group-item-action py-2 ripple">
+                        <i class="fas fa-chart-area fa-fw me-3"></i><span>My profile</span>
+                    </a>
+                    </a>
+                    <a href="{{ path("app_reservation_ask") }}" class="list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>Make reservation</span>
                     </a>
                     <a href="{{ path("app_users_show") }}" class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-lock fa-fw me-3"></i><span>Personnel</span></a
+                    ><i class="fas fa-lock fa-fw me-3"></i><span>Buildings</span></a
                     >
                     <a href="{{ path("app_building_index") }}" class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-chart-line fa-fw me-3"></i><span>Building</span></a
+                    ><i class="fas fa-chart-line fa-fw me-3"></i><span>Rooms</span></a
                     >
                     <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-                        <i class="fas fa-chart-pie fa-fw me-3"></i><span>Requests</span>
+                        <i class="fas fa-chart-pie fa-fw me-3"></i><span>My Requests</span>
                     </a>
                     <a href="#" class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-chart-bar fa-fw me-3"></i><span>Reservations</span></a
+                    ><i class="fas fa-chart-bar fa-fw me-3"></i><span> My Reservations</span></a
                     >
                 </div>
             </div>
@@ -126,7 +134,7 @@
                 </button>
 
                 <!-- Brand -->
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="{{ path('app_user_index') }}">
                     <img
                             src="https://cdn-icons-png.flaticon.com/512/1105/1105914.png"
                             height="50"
@@ -137,7 +145,6 @@
                 </a>
 
                 <!-- Avatar -->
-                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <div class="dropdown">
                         <button
                                 class="dropdown-toggle btn"
@@ -156,7 +163,6 @@
                             </li>
                         </ul>
                     </div>
-                {% endif %}
             </div>
             <!-- Container wrapper -->
         </nav>
